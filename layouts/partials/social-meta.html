@@ -1,0 +1,67 @@
+{{- $title := .Site.Title -}}
+{{- if not .IsHome -}}
+  {{- $title = printf "%s — %s" .Title .Site.Title -}}
+{{- end -}}
+
+{{- $placeholder := "Aquí se puede escribir una breve sinopsis" -}}
+{{- $orgName := "El Excéntrico de la 18" -}}
+{{- $description := .Site.Params.descripcion -}}
+
+{{- /* 1) description explícita en front matter */ -}}
+{{- with .Description -}}
+  {{- if not (strings.Contains . $placeholder) -}}
+    {{- $description = . -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* 2) Summary del cuerpo, si no es el placeholder */ -}}
+{{- if eq $description .Site.Params.descripcion -}}
+  {{- with .Summary -}}
+    {{- $plain := . | plainify | strings.TrimSpace -}}
+    {{- if and $plain (not (strings.Contains $plain $placeholder)) -}}
+      {{- $description = $plain | truncate 160 -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* 3) Fichas de obra: descripción generada desde título + año */ -}}
+{{- if and (eq .Section "obras") .IsPage (eq $description .Site.Params.descripcion) -}}
+  {{- $anio := .Params.anio | default .Date.Year -}}
+  {{- $description = printf "%s (%v) — obra en la biblioteca de %s, Buenos Aires." .Title $anio $orgName -}}
+{{- end -}}
+
+{{- /* og:image — og_image > primera foto existente > default del sitio */ -}}
+{{- $image := .Params.og_image | default "" -}}
+{{- if not $image -}}
+  {{- with .Params.fotos -}}
+    {{- $first := index . 0 -}}
+    {{- if reflect.IsMap $first -}}
+      {{- $first = $first.src | default "" -}}
+    {{- end -}}
+    {{- if $first -}}
+      {{- $rel := strings.TrimPrefix "/" $first -}}
+      {{- if fileExists (printf "static/%s" $rel) -}}
+        {{- $image = printf "/%s" $rel -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $image = $image | default .Site.Params.og_image | default "/img/og/portada.jpg" -}}
+{{- $imageURL := $image | absURL -}}
+
+<meta name="description" content="{{ $description }}">
+<link rel="canonical" href="{{ .Permalink }}">
+
+<meta property="og:site_name" content="{{ .Site.Title }}">
+<meta property="og:title" content="{{ $title }}">
+<meta property="og:description" content="{{ $description }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
+<meta property="og:locale" content="{{ .Site.LanguageCode }}">
+<meta property="og:image" content="{{ $imageURL }}">
+<meta property="og:image:alt" content="{{ $title }}">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ $title }}">
+<meta name="twitter:description" content="{{ $description }}">
+<meta name="twitter:image" content="{{ $imageURL }}">

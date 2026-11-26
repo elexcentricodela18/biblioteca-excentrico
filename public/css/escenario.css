@@ -1,0 +1,240 @@
+/* ═══════════════════════════════════════
+   ESCENARIO — El excéntrico de la 18
+   ═══════════════════════════════════════ */
+
+/* ── Fondo negro base ── */
+#escenario {
+  position: fixed;
+  inset: 0;
+  background: #000000;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* ── Cada slide ocupa toda la pantalla ── */
+.slide {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+  pointer-events: none;
+}
+
+.slide.visible { opacity: 1; }
+
+/* ── La imagen ── */
+.slide img {
+  display: block;
+  max-width: 80vw;
+  max-height: 80vh;
+  object-fit: contain;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Foco de color (controlado desde JS) ── */
+.slide::after {
+  content: '';
+  position: absolute;
+  inset: -20%;
+  opacity: 0;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  transition: opacity 2s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: var(--z-foco, 2);
+  background: var(--gradiente-foco, none);
+  filter: blur(10px);
+}
+
+.slide.visible::after { opacity: 0.5; }
+
+/* ── Título y subtítulo ── */
+#centro {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 75%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 10000;
+  padding-left: 10%;
+}
+
+.home-lockup {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  width: max-content;
+  max-width: 100%;
+  height: 100%;
+}
+
+#titulo {
+  margin: 0;
+  font-family: 'Archibrazo-VF-Upright', system-ui, sans-serif;
+  font-size: clamp(2.4rem, 7vw, 6.5rem);
+  font-weight: 300;
+  line-height: 1.0;
+  color: #ffffff;
+  text-shadow: 0 0 40px rgba(0,0,0,0.8);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 1.5s ease, transform 1.5s ease;
+}
+
+#titulo.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#anio {
+  font-family: 'Archibrazo-VF-Upright', system-ui, sans-serif;
+  font-size: clamp(1.05rem, 1.65vw, 1.35rem);
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(0,0,0,0.8);
+  margin-top: 1.1rem;
+  opacity: 0;
+  transition: opacity 2s ease 0.8s;
+}
+
+#anio.visible { opacity: 1; }
+
+/* Insets compartidos: banner de cookies alineado al bloque #centro */
+body.home {
+  background: #000000;
+  --home-banner-inset-left: 2rem;
+  --home-banner-inset-right: 2rem;
+  --home-mecenazgo-h: 36px;
+  --home-creditos-bottom: 40px;
+  --home-banner-inset-bottom: calc(var(--home-creditos-bottom) + var(--home-mecenazgo-h) + 16px);
+}
+
+.home-creditos {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--home-creditos-bottom);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  width: 100%;
+  pointer-events: auto;
+  opacity: 0;
+  transition: opacity 2s ease 0.8s;
+}
+
+.home-creditos.visible,
+#titulo.visible ~ .home-creditos {
+  opacity: 1;
+}
+
+.mecenazgo--home .mecenazgo__logo {
+  height: var(--home-mecenazgo-h);
+}
+
+.footer-creditos-end--home {
+  gap: 4.5rem;
+}
+
+.site-redes--home,
+.site-redes--home .site-redes__link {
+  color: var(--white);
+}
+
+.site-redes--home .site-redes__link--web {
+  font-family: 'Archibrazo-VF-Upright', system-ui, sans-serif;
+  text-shadow: 0 0 20px rgba(0,0,0,0.8);
+}
+
+.site-redes--home .site-redes__icon {
+  filter: drop-shadow(0 0 12px rgba(0,0,0,0.8));
+}
+
+.site-redes--home .site-redes__link:focus-visible {
+  outline-color: var(--white);
+}
+
+.creditos-enlace--home {
+  font-family: 'Archibrazo-VF-Upright', system-ui, sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  color: #ffffff;
+  text-shadow: 0 0 20px rgba(0,0,0,0.8);
+  white-space: nowrap;
+}
+
+.creditos-enlace--home:hover {
+  color: #ffffff;
+  opacity: 0.75;
+}
+
+.creditos-enlace--home:focus-visible {
+  outline-color: var(--white);
+}
+
+@media (min-width: 768px) {
+  body.home {
+    --home-banner-inset-left: 10vw;
+    --home-banner-inset-right: 25vw;
+  }
+}
+
+/* ── Borde perimetral ── */
+body.home::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  border: none; /* 0px solid rgba(255,255,255,1); colocar un borde al escenario */
+  pointer-events: none;
+  z-index: 9998;
+}
+
+/* ── Mobile ── */
+@media (max-width: 767px) {
+  #centro {
+    width: 100%;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    align-items: center;
+    text-align: center;
+  }
+
+  body.home {
+    --home-mecenazgo-h: 28px;
+    --home-creditos-stack: calc(1.25rem + 1rem + var(--home-mecenazgo-h) + 1rem + 22px);
+    --home-banner-inset-bottom: calc(var(--home-creditos-bottom) + var(--home-creditos-stack) + 12px);
+  }
+
+  .home-creditos {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    text-align: left;
+  }
+
+  .home-creditos .creditos-enlace {
+    align-self: flex-start;
+  }
+
+  .footer-creditos-end--home {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-end;
+    flex-wrap: nowrap;
+    gap: 1rem;
+  }
+}

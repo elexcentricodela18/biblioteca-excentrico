@@ -1,0 +1,27 @@
+<div
+  id="home-gate"
+  class="home-gate"
+  role="dialog"
+  aria-labelledby="home-gate-title"
+  aria-describedby="home-gate-desc"
+  aria-modal="true">
+  <div class="home-gate__inner">
+    <h1 id="home-gate-title" class="home-gate__title">Biblioteca<br>El Excéntrico de la 18</h1>
+    <p id="home-gate-desc" class="home-gate__status">en construcción</p>
+    <form id="home-gate-form" class="home-gate__form" autocomplete="off">
+      <label class="home-gate__label" for="home-gate-password">Clave de acceso</label>
+      <div class="home-gate__fields">
+        <input
+          type="password"
+          id="home-gate-password"
+          class="home-gate__input"
+          name="password"
+          autocomplete="current-password"
+          spellcheck="false"
+          required>
+        <button type="submit" class="home-gate__submit">Entrar</button>
+      </div>
+      <p id="home-gate-error" class="home-gate__error" hidden>Clave incorrecta</p>
+    </form>
+  </div>
+</div>

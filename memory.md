@@ -1,0 +1,1 @@
+../biblioteca-excentrico-contexto/memory.md

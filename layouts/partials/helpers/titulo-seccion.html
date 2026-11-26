@@ -1,0 +1,6 @@
+{{- /* Une partículas cortas a la palabra siguiente para no dejarlas solas al wrap. */ -}}
+{{- $t := . -}}
+{{- $t = replace $t " y " " y&nbsp;" -}}
+{{- $t = replace $t " De " " De&nbsp;" -}}
+{{- $t = replace $t " de " " de&nbsp;" -}}
+{{- $t | safeHTML -}}

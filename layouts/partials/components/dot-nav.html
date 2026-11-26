@@ -1,0 +1,30 @@
+{{/*
+  Navegación lateral por puntos (scroll-spy)
+  Parámetros:
+    items (slice) — páginas Hugo o dicts con title + anchor
+    labelKey (string) — default "Title"
+    anchorPrefix (string) — default "ciclo"
+*/}}
+{{ $items := .items | default slice }}
+{{ if lt (len $items) 1 }}{{ return }}{{ end }}
+{{ $anchorPrefix := .anchorPrefix | default "ciclo" }}
+
+<nav class="dot-nav" aria-label="Navegación por secciones">
+  <ol class="dot-nav__list">
+    {{ range $i, $item := $items }}
+      {{ $title := $item.Title }}
+      {{ $anchor := printf "%s-%s" $anchorPrefix ($title | anchorize) }}
+      <li class="dot-nav__item">
+        <a
+          href="#{{ $anchor }}"
+          class="dot-nav__link tooltip-trigger{{ if eq $i 0 }} is-active{{ end }}"
+          data-dot-nav
+          data-target="{{ $anchor }}"
+          aria-label="{{ $title }}">
+          <span class="dot-nav__dot" aria-hidden="true"></span>
+          {{ partial "components/tooltip.html" (dict "text" $title "class" "tooltip--left" "id" (printf "dot-nav-tip-%d" $i)) }}
+        </a>
+      </li>
+    {{ end }}
+  </ol>
+</nav>

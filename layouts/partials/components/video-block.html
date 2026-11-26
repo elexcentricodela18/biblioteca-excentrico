@@ -1,0 +1,53 @@
+{{/*
+  Video embebido — componente maestro reutilizable
+  Parámetros (desde front matter de cada página):
+    url       (string) — enlace YouTube, Vimeo u otra URL de embed directa
+    src       (string) — archivo local (mp4/webm) servido desde /static
+    poster    (string) — imagen de portada antes del play (recomendado en mobile)
+    titulo    (string) — título accesible del iframe / video
+    subtitulo (string) — opcional; visible solo en placeholder sin url/src
+    class     (string) — clases extra en el contenedor
+*/}}
+{{ if not (or .url .src .titulo .subtitulo) }}{{ return }}{{ end }}
+
+{{ $titulo := .titulo | default "Registro audiovisual" }}
+{{ $src := .src | default "" | strings.TrimSpace }}
+{{ $poster := .poster | default "" | strings.TrimSpace }}
+{{ $embed := "" }}
+{{ if and (not $src) .url }}
+  {{ $embed = partial "components/video-embed-url.html" (dict "url" .url) | strings.TrimSpace }}
+{{ end }}
+
+<div class="video-block{{ with .class }} {{ . }}{{ end }}">
+  {{ if $src }}
+  <div class="video-block__player">
+    <video
+      controls
+      controlslist="nodownload"
+      playsinline
+      preload="metadata"
+      {{ with $poster }}poster="{{ . | relURL }}"{{ end }}
+      title="{{ $titulo }}">
+      <source src="{{ $src | relURL }}" type="video/mp4">
+      Tu navegador no reproduce este video.
+    </video>
+  </div>
+  {{ else if $embed }}
+  <div class="video-block__embed">
+    <iframe
+      src="{{ $embed }}"
+      title="{{ $titulo }}"
+      loading="lazy"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerpolicy="strict-origin-when-cross-origin"
+      allowfullscreen></iframe>
+  </div>
+  {{ else }}
+  <div class="video-block__placeholder" aria-hidden="true">
+    <p class="video-block__titulo">{{ $titulo }}</p>
+    {{ with .subtitulo }}
+    <p class="video-block__sub">{{ . }}</p>
+    {{ end }}
+  </div>
+  {{ end }}
+</div>

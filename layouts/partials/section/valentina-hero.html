@@ -1,0 +1,37 @@
+{{/*
+  Hero Valentina — mismo patrón que Historia (headline + epígrafe)
+  Parámetro: dict con hero { image, headline, epigrafe }
+*/}}
+{{ $hero := .hero }}
+{{ if not $hero }}{{ return }}{{ end }}
+{{ $ancho := $hero.ancho | default 1920 }}
+{{ $alto := $hero.alto | default 1080 }}
+
+<figure class="historia-hero">
+  <div class="historia-hero-media" data-hero-luces>
+    <img
+      class="historia-hero-img"
+      src="{{ $hero.image | relURL }}"
+      alt="{{ $hero.alt | default "" }}"
+      width="{{ $ancho }}"
+      height="{{ $alto }}"
+      decoding="async"
+      fetchpriority="high">
+    {{ with $hero.headline }}
+    <div class="historia-hero-text-wrap">
+      <div class="grid-container">
+        <div class="grid">
+          <p class="historia-hero-headline site-col-from-2 site-col-to-end">{{ . }}</p>
+        </div>
+      </div>
+    </div>
+    {{ end }}
+  </div>
+  {{ with $hero.epigrafe }}
+  <div class="grid-container historia-epigrafe-wrap">
+    <div class="grid">
+      <figcaption class="historia-hero-epigrafe site-col-from-7 site-col-to-end">{{ . }}</figcaption>
+    </div>
+  </div>
+  {{ end }}
+</figure>

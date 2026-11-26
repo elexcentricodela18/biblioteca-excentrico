@@ -1,0 +1,84 @@
+/* ==========================================================================
+   Módulo Adicional: Talleres, Seminarios
+   ========================================================================== */
+
+/* Bloque del encabezado de la sección */
+.talleres-header {
+  margin-top: 3rem;
+  margin-bottom: 4rem;
+}
+
+.talleres-titulo {
+  font-family: var(--serif);
+  font-size: clamp(2.2rem, 6vw, 3.5rem);
+  font-weight: 400;
+  line-height: 1.1;
+  color: var(--texto);
+}
+
+.talleres-color-hightlight {
+  color: var(--talleres) !important; /* Inyección del verde asignado al menú */
+}
+
+/* Grilla estructural basada en el ancho máximo de 960px */
+.docentes-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 5rem; /* Separación dramática y limpia entre profesionales */
+  margin-bottom: 6rem;
+}
+
+.docente-bloque {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .docente-bloque {
+    grid-template-columns: clamp(200px, 25vw, 280px) 1fr; /* Estructura asimétrica */
+    gap: 40px;
+  }
+}
+
+/* Identificación del Docente */
+.docente-perfil h2 {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  border-bottom: 1px solid var(--borde-fino);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+/* ── Regla de Oro: Sangría Francesa Convencional ── */
+.sangria-francesa {
+  padding-left: 2rem;       /* Desplazamiento del bloque completo hacia la derecha */
+  text-indent: -2rem;       /* Forzado de la primera línea hacia la izquierda de forma exacta */
+  margin-bottom: 1.2rem;
+  text-align: justify;
+}
+
+/* Variante estilizada para la biografía/talleres */
+.sangria-francesa strong {
+  font-family: var(--sans);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.talleres-asociados {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px dashed var(--borde);
+}
+
+.talleres-asociados h3 {
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--texto-tenue);
+  margin-bottom: 1rem;
+}

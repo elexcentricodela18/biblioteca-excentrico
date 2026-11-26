@@ -1,0 +1,25 @@
+{{/*
+  Botones del buscador (limpiar + enviar)
+  Parámetros:
+    clearId  (string) — id opcional del botón limpiar
+    tooltips (bool)   — default true
+*/}}
+{{ $tooltips := index . "tooltips" | default true }}
+{{ $clearId := index . "clearId" | default "" }}
+<button
+  type="button"
+  class="buscar-clear{{ if $tooltips }} tooltip-trigger{{ end }}"
+  {{- with $clearId }} id="{{ . }}"{{ end -}}
+  hidden
+  aria-label="Limpiar búsqueda">
+  <span class="buscar-clear-icon" aria-hidden="true"></span>
+  {{- if $tooltips -}}
+  {{ partial "components/tooltip.html" (dict "text" "Limpiar búsqueda" "class" "tooltip--below") }}
+  {{- end -}}
+</button>
+<button type="submit" class="buscar-btn{{ if $tooltips }} tooltip-trigger{{ end }}" aria-label="Buscar">
+  <span class="lupa-dibujo" aria-hidden="true"></span>
+  {{- if $tooltips -}}
+  {{ partial "components/tooltip.html" (dict "text" "Buscar" "class" "tooltip--below") }}
+  {{- end -}}
+</button>

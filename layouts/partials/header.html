@@ -1,0 +1,18 @@
+<header class="site-header">
+  <div class="grid-container">
+    <div class="grid site-header-grid">
+      {{ partial "site-header-breadcrumb.html" . }}
+      <button id="hamburger" aria-label="Menú" aria-expanded="false">
+        <span class="ham-linea"></span>
+        <span class="ham-linea"></span>
+        <span class="ham-linea"></span>
+      </button>
+      <hr class="site-header-rule">
+    </div>
+  </div>
+</header>
+
+{{ if eq .Layout "equipo" }}
+  {{ $style := resources.Get "css/sections/equipo.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $style.Permalink }}">
+{{ end }}

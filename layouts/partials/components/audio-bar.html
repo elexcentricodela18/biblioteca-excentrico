@@ -1,0 +1,43 @@
+{{/*
+  Barra de audio — reutilizable (estilo WhatsApp)
+  Parámetros:
+    titulo  (string) — nombre del audio
+    src     (string) — ruta al archivo (ej. /audio/foo.mp3)
+    class   (string) — clases extra opcionales
+*/}}
+{{ $titulo := .titulo }}
+{{ $titleId := printf "audio-title-%s" (md5 $titulo) }}
+<div class="audio-bar{{ with .class }} {{ . }}{{ end }}" data-audio-bar>
+  <audio class="audio-bar__media" src="{{ .src | relURL }}" preload="metadata" aria-labelledby="{{ $titleId }}"></audio>
+  <div class="audio-bar__main">
+    <button type="button" class="audio-bar__play" aria-label="Reproducir {{ $titulo }}" aria-pressed="false">
+      <span class="audio-bar__play-face" aria-hidden="true">
+        <span class="audio-bar__play-icon audio-bar__play-icon--play"></span>
+        <span class="audio-bar__play-icon audio-bar__play-icon--pause"></span>
+      </span>
+    </button>
+    <span class="audio-bar__title" id="{{ $titleId }}">{{ $titulo }}</span>
+  </div>
+  <div class="audio-bar__controls">
+    <button
+      type="button"
+      class="audio-bar__waveform"
+      role="slider"
+      aria-label="Posición en {{ $titulo }}"
+      aria-valuemin="0"
+      aria-valuemax="100"
+      aria-valuenow="0"
+      aria-valuetext="0:00 de 0:00"
+    >
+      <span class="audio-bar__waveform-bars" aria-hidden="true">
+        {{- range seq 40 -}}
+        {{- $h := add (mod (add (mul . 17) (mul (mod . 5) 23)) 55) 28 -}}
+        <span class="audio-bar__bar" style="--bar-h: {{ $h }}%"></span>
+        {{- end -}}
+      </span>
+    </button>
+    <span class="audio-bar__time">
+      <span class="audio-bar__current">0:00</span><span class="audio-bar__sep" aria-hidden="true"> / </span><span class="audio-bar__duration">0:00</span>
+    </span>
+  </div>
+</div>

@@ -1,0 +1,52 @@
+{{- /*
+  Marcas editoriales en texto corrido (no títulos).
+
+  • <em>obra</em>     → itálica (las «» del texto corrido se muestran como comillas)
+  • «obra» en títulos → itálica (solo con sin_siglas)
+  • *palabra*         → itálica
+  • **palabra**       → negrita
+  • ***palabra***     → negrita itálica
+  • <v>ARTEI</v>      → versalitas (explícito)
+  • Siglas conocidas  → versalitas (ARTEI, ACE, UNSAM, H.I.J.O.S., …)
+
+  Uso: {{ partial "helpers/versalitas.html" $texto }}
+       {{ partial "helpers/versalitas.html" (dict "texto" $html "html" true) }}
+       {{ partial "helpers/versalitas.html" (dict "texto" $titulo "sin_siglas" true) }}
+*/ -}}
+{{- $t := "" -}}
+{{- $html := false -}}
+{{- $sinSiglas := false -}}
+{{- $kind := printf "%T" . -}}
+{{- if or (eq $kind "string") (eq $kind "template.HTML") -}}
+  {{- $t = . | string -}}
+{{- else -}}
+  {{- $t = .texto | default "" | string -}}
+  {{- $html = .html | default false -}}
+  {{- $sinSiglas = .sin_siglas | default false -}}
+{{- end -}}
+
+{{- $t = replaceRE `<v>([\s\S]*?)</v>` `<span class="versalita">$1</span>` $t -}}
+{{- $t = replaceRE `<versalita>([\s\S]*?)</versalita>` `<span class="versalita">$1</span>` $t -}}
+{{- if $sinSiglas -}}
+  {{- $t = replaceRE `«([^»]+)»` `<em>$1</em>` $t -}}
+{{- end -}}
+
+{{- if not $html -}}
+  {{- $t = replaceRE `\*\*\*([^*]+)\*\*\*` `<strong><em>$1</em></strong>` $t -}}
+  {{- $t = replaceRE `\*\*([^*]+)\*\*` `<strong>$1</strong>` $t -}}
+  {{- $t = replaceRE `\*([^*]+)\*` `<em>$1</em>` $t -}}
+{{- end -}}
+
+{{- /* ARTEI: siempre (también en títulos), cualquier capitalización → versalita */ -}}
+{{- $t = replaceRE `(?i)\bartei\b` `<span class="versalita">ARTEI</span>` $t -}}
+
+{{- if not $sinSiglas -}}
+  {{- $t = replace $t "H.I.J.O.S." "<span class=\"versalita\">H.I.J.O.S.</span>" -}}
+  {{- $t = replace $t "Ficha técnica" "<span class=\"versalita\">Ficha técnica</span>" -}}
+  {{- range (slice "UNSAM" "FADU" "CABA" "CCK" "ACE" "CIC" "UBA" "UNA" "INT") -}}
+    {{- $t = replaceRE (printf `\b%s\b` .) (printf `<span class="versalita">%s</span>` .) $t -}}
+  {{- end -}}
+{{- end -}}
+{{- $t = replaceRE `<span class="versalita"><span class="versalita">([^<]+)</span></span>` `<span class="versalita">$1</span>` $t -}}
+
+{{- $t | safeHTML -}}

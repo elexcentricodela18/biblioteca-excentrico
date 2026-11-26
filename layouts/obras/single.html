@@ -1,0 +1,75 @@
+{{ define "main" }}
+{{ $anio := .Params.anio | default .Date.Year }}
+
+<div class="obra-ficha-page">
+  <div class="grid-container">
+    <div class="grid obra-ficha-grid">
+
+      <header class="obra-ficha-cabecera site-col-from-2 site-col-to-end">
+        <h1 class="obra-ficha-titulo">
+          <span class="obra-ficha-anio">{{ $anio }}</span>
+          <span class="obra-ficha-nombre">{{ .Title }}</span>
+        </h1>
+      </header>
+
+      <div class="obra-ficha-cuerpo">
+        {{ partial "components/obra-ficha-creditos.html" . }}
+      </div>
+
+      {{ $placeholder := "Aquí se puede escribir una breve sinopsis" }}
+      {{ $plainContent := .RawContent | strings.TrimSpace }}
+      {{ if and .Content (not (strings.Contains $plainContent $placeholder)) }}
+      <div class="obra-texto">
+        {{ partial "helpers/versalitas.html" (dict "texto" .Content "html" true) }}
+      </div>
+      {{ end }}
+
+      {{ $video := dict }}
+      {{ with .Params.video }}
+        {{ $video = . }}
+      {{ else }}
+        {{ with .Params.video_url }}
+          {{ $video = dict "url" . "titulo" (printf "Video — %s" $.Title) }}
+        {{ end }}
+      {{ end }}
+      {{ if $video }}
+      {{ $videoClass := "" }}
+      {{ if $video.src }}{{ $videoClass = "video-block--native" }}{{ end }}
+      <div class="obra-ficha-media">
+        {{ partial "components/video-block.html" (merge $video (dict "class" $videoClass "titulo" ($video.titulo | default (printf "Video — %s" $.Title)))) }}
+      </div>
+      {{ end }}
+
+      {{ with .Params.fotos }}
+      {{ $items := slice }}
+      {{ range . }}
+        {{ if reflect.IsMap . }}
+          {{ $items = $items | append . }}
+        {{ else }}
+          {{ $items = $items | append (dict "src" . "alt" (printf "Foto de %s" $.Title) "orientacion" "apaisada") }}
+        {{ end }}
+      {{ end }}
+      <div class="obra-ficha-media">
+        {{ partial "components/media-gallery.html" (dict "items" $items) }}
+      </div>
+      {{ end }}
+
+      {{ if or .PrevInSection .NextInSection }}
+      <nav class="obra-nav" aria-label="Obras anterior y siguiente">
+        <div class="obra-nav__prev">
+          {{ with .PrevInSection }}
+          <a href="{{ .RelPermalink }}" class="obra-nav__link">← {{ .Title }}</a>
+          {{ end }}
+        </div>
+        <div class="obra-nav__next">
+          {{ with .NextInSection }}
+          <a href="{{ .RelPermalink }}" class="obra-nav__link">{{ .Title }} →</a>
+          {{ end }}
+        </div>
+      </nav>
+      {{ end }}
+
+    </div>
+  </div>
+</div>
+{{ end }}

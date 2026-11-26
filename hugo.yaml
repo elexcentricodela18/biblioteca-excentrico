@@ -1,0 +1,43 @@
+baseURL: "https://www.bibliotecaelexcentricodela18.com.ar"
+languageCode: "es-AR"
+title: "El excéntrico de la 18 — 40 años"
+#theme: ""
+
+params:
+  descripcion: "Biblioteca del teatro El excéntrico de la 18°, 40 años de teatro independiente en Buenos Aires."
+  og_image: "/img/og/portada.jpg"
+  color_fondo: "#F5F0EC"
+  color_texto: "#111111"
+  tipografia_titulo: "DM Serif Display"
+  tipografia_cuerpo: "DM Sans"
+
+taxonomies:
+  tipo: tipos
+  docente: docentes
+  anio: anios
+  genero: generos
+
+outputs:
+  home:
+    - HTML
+    - JSON
+  section:
+    - HTML
+  page:
+    - HTML
+
+cascade:
+  - _target:
+      path: /obras/**
+      kind: page
+    params:
+      custom_css:
+        - obra-ficha
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+
+# Nota: en Hugo 0.123+ el flag de memoria es --renderToMemory (CLI).
+# Usar scripts/dev.ps1 para desarrollo local en Windows.

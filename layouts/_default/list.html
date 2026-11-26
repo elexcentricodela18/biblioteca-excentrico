@@ -1,0 +1,53 @@
+{{ define "main" }}
+<div class="container">
+  <!-- 1. Navegación superior -->
+
+<!-- <div class="container">
+  <header class="page-header">
+    <h1 class="page-titulo">{{ .Title }}</h1>
+    <h3 class="hero-subtitulo">{{ .Description }}</h3>
+  </header>
+  -->
+
+  <div class="biblioteca-contenedor">
+    {{/* 1. Recolectamos los años en una lista */}}
+    {{ $anios := slice }}
+    {{ range .RegularPages }}
+      {{ if .Params.anio }}
+        {{ $anios = $anios | append .Params.anio }}
+      {{ end }}
+    {{ end }}
+
+    {{/* 
+        2. Ordenamos la lista de forma descendente:
+        - uniq: elimina duplicados.
+        - sort . "value" "desc": ordena de mayor a menor.
+    */}}
+    {{ range (sort ($anios | uniq) "value" "desc") }}
+      {{ $anioActual := . }}
+      
+      <section class="grupo-anio">
+        <h2 class="anio-cabecera">{{ $anioActual }}</h2>
+        
+        <div class="lista-obras">
+          {{/* 
+              3. Filtramos las obras del año actual.
+              Agregamos urlize al data-tipo para que coincida con el botón del filtro.
+          */}}
+          {{ range where $.RegularPages "Params.anio" "==" $anioActual }}
+            <article class="obra-item" data-tipo="{{ .Params.tipo | urlize }}">
+              <a href="{{ .Permalink }}" class="obra-link">
+                <h3 class="obra-nombre">{{ .Title }}</h3>
+                <span class="obra-tipo-tag">{{ .Params.tipo }}</span>
+                <span class="obra-ver">→</span>
+              </a>
+            </article>
+          {{ end }}
+        </div>
+      </section>
+    {{ end }}
+  </div>
+
+  <p class="filtros-resultado" id="filtros-resultado"></p>
+</div>
+{{ end }}

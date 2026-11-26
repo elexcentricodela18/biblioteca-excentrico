@@ -1,0 +1,53 @@
+{{/*
+  Slideshow editorial — imagen principal + miniaturas
+  Parámetros:
+    items (slice) — src, alt, placeholder (bool)
+    class (string) — clases extra
+    ratio (string) — aspect-ratio CSS del marco, p. ej. "4 / 3" (default 16 / 9)
+*/}}
+{{ $items := .items | default slice }}
+{{ if lt (len $items) 1 }}{{ return }}{{ end }}
+{{ $ratioKey := replace (.ratio | default "16 / 9") " " "" }}
+
+<div
+  class="media-slideshow{{ with .class }} {{ . }}{{ end }}"
+  data-media-slideshow
+  data-ratio="{{ $ratioKey }}">
+  <div class="media-slideshow__main" aria-live="polite">
+    {{ range $i, $item := $items }}
+    <figure class="media-slideshow__slide{{ if eq $i 0 }} is-active{{ end }}" data-slide="{{ $i }}"{{ if ne $i 0 }} hidden{{ end }}>
+      {{ if and $item.src (not $item.placeholder) }}
+      <img
+        src="{{ $item.src | relURL }}"
+        alt="{{ $item.alt | default (printf "Imagen %d" (add $i 1)) }}"
+        loading="{{ if eq $i 0 }}eager{{ else }}lazy{{ end }}"
+        decoding="async">
+      {{ else }}
+      <div class="media-slideshow__placeholder" aria-hidden="true">
+        <span>{{ $item.alt | default (printf "Imagen %d" (add $i 1)) }}</span>
+      </div>
+      {{ end }}
+    </figure>
+    {{ end }}
+  </div>
+
+  {{ if gt (len $items) 1 }}
+  <div class="media-slideshow__thumbs" role="tablist" aria-label="Miniaturas de la galería">
+    {{ range $i, $item := $items }}
+    <button
+      type="button"
+      class="media-slideshow__thumb{{ if eq $i 0 }} is-active{{ end }}"
+      role="tab"
+      aria-selected="{{ if eq $i 0 }}true{{ else }}false{{ end }}"
+      aria-label="{{ $item.alt | default (printf "Ver imagen %d" (add $i 1)) }}"
+      data-slide-to="{{ $i }}">
+      {{ if and $item.src (not $item.placeholder) }}
+      <img src="{{ $item.src | relURL }}" alt="" loading="lazy" decoding="async">
+      {{ else }}
+      <span class="media-slideshow__thumb-ph" aria-hidden="true"></span>
+      {{ end }}
+    </button>
+    {{ end }}
+  </div>
+  {{ end }}
+</div>

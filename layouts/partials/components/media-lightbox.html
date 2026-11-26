@@ -1,0 +1,21 @@
+{{/*
+  Lightbox de galería — un diálogo por página.
+  Close = X del menú (misma posición). Flechas Archibrazo. Blur del fondo.
+*/}}
+<dialog class="media-lightbox" id="media-lightbox" aria-label="Imagen ampliada">
+  <button type="button" class="media-lightbox__close" data-lightbox-close aria-label="Cerrar">
+    <span class="ham-linea" aria-hidden="true"></span>
+    <span class="ham-linea" aria-hidden="true"></span>
+    <span class="ham-linea" aria-hidden="true"></span>
+  </button>
+  <button type="button" class="media-lightbox__nav media-lightbox__nav--prev" data-lightbox-prev aria-label="Imagen anterior">
+    <span class="media-lightbox__nav-icon" aria-hidden="true">⭠</span>
+  </button>
+  <figure class="media-lightbox__figure">
+    <img class="media-lightbox__img" alt="" data-lightbox-img>
+    <figcaption class="media-lightbox__caption" data-lightbox-caption hidden></figcaption>
+  </figure>
+  <button type="button" class="media-lightbox__nav media-lightbox__nav--next" data-lightbox-next aria-label="Imagen siguiente">
+    <span class="media-lightbox__nav-icon" aria-hidden="true">⭢</span>
+  </button>
+</dialog>

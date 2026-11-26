@@ -1,0 +1,78 @@
+{{ $item := . }}
+{{ $orient := partial "components/media-gallery-orient.html" $item }}
+{{ $tipo := $item.tipo | default "imagen" }}
+<figure class="media-gallery__item media-gallery__item--{{ $orient }}{{ if $item.completa }} media-gallery__item--completa{{ end }}">
+  {{ if eq $tipo "video" }}
+    <div class="media-gallery__video">
+      {{ if $item.src }}
+      <video
+        controls
+        controlslist="nodownload"
+        playsinline
+        preload="metadata"
+        {{ with $item.poster }}poster="{{ . | relURL }}"{{ end }}
+        title="{{ $item.alt | default "Video" }}">
+        <source src="{{ $item.src | relURL }}" type="video/mp4">
+        Tu navegador no reproduce este video.
+      </video>
+      {{ else if $item.video_url }}
+      {{ $embed := partial "components/video-embed-url.html" (dict "url" $item.video_url) | strings.TrimSpace }}
+      {{ if $embed }}
+      <iframe
+        src="{{ $embed }}"
+        title="{{ $item.alt | default "Video" }}"
+        loading="lazy"
+        allow="autoplay; fullscreen; picture-in-picture"
+        allowfullscreen></iframe>
+      {{ else }}
+      <div class="media-gallery__placeholder media-gallery__placeholder--video">
+        <span class="media-gallery__placeholder-label">{{ $item.alt | default "Video" }}</span>
+      </div>
+      {{ end }}
+      {{ else }}
+      <div class="media-gallery__placeholder media-gallery__placeholder--video">
+        <span class="media-gallery__placeholder-label">{{ $item.alt | default "Video" }}</span>
+      </div>
+      {{ end }}
+    </div>
+    {{ with $item.epigrafe }}
+    <figcaption class="media-gallery__epigrafe">{{ partial "helpers/versalitas.html" . }}</figcaption>
+    {{ end }}
+  {{ else if and $item.src (not $item.placeholder) }}
+    {{/* Lightbox: epigrafe > alt; credito se suma si hay texto, o queda solo si no hay alt/epígrafe */}}
+    {{ $caption := $item.epigrafe }}
+    {{ if not $caption }}
+      {{ with strings.TrimSpace ($item.alt | default "") }}
+        {{ $caption = . }}
+      {{ end }}
+    {{ end }}
+    {{ with $item.credito }}
+      {{ $credLine := printf "Fotografía: %s" . }}
+      {{ if $caption }}
+        {{ $caption = printf "%s. %s" $caption $credLine }}
+      {{ else }}
+        {{ $caption = $credLine }}
+      {{ end }}
+    {{ end }}
+    <button
+      type="button"
+      class="media-gallery__zoom"
+      data-lightbox-open
+      data-lightbox-src="{{ $item.src | relURL }}"
+      {{ with $caption }}data-lightbox-caption="{{ . | plainify | htmlUnescape | htmlEscape }}"{{ end }}
+      aria-label="Ampliar {{ $item.alt | default "imagen" }}">
+      <img
+        src="{{ $item.src | relURL }}"
+        alt="{{ $item.alt | default "" }}"
+        loading="lazy"
+        decoding="async">
+    </button>
+    {{ with $item.epigrafe }}
+    <figcaption class="media-gallery__epigrafe">{{ partial "helpers/versalitas.html" . }}</figcaption>
+    {{ end }}
+  {{ else }}
+    <div class="media-gallery__placeholder" aria-hidden="true">
+      <span class="media-gallery__placeholder-label">{{ $item.alt | default "Imagen" }}</span>
+    </div>
+  {{ end }}
+</figure>

@@ -1,0 +1,4 @@
+{{- with .value -}}
+<div class="ficha-label">{{ $.label }}</div>
+<div class="ficha-val">{{ partial "components/obra-ficha-valor.html" . }}</div>
+{{- end -}}

@@ -1,0 +1,20 @@
+{{ define "main" }}
+{{ $items := sort .Pages "Weight" }}
+
+<div class="section-page section-page--ciclos" data-pagefind-body>
+  <div class="grid-container">
+    <div class="grid section-header-grid">
+      <h1 class="section-titulo-pagina section-titulo-pagina--ciclos">{{ partial "helpers/titulo-seccion.html" .Title }}</h1>
+      {{ partial "section/equipo-intro.html" (dict "page" .) }}
+    </div>
+  </div>
+
+  {{ partial "components/dot-nav.html" (dict "items" $items "anchorPrefix" "ciclo") }}
+
+  {{ range $items }}
+  {{ partial "section/grupo-block.html" (dict "page" . "idPrefix" "ciclo" "tema" "ciclos" "subitemsKey" "eventos") }}
+  {{ end }}
+
+  {{ partial "components/btn-up-to-top.html" dict }}
+</div>
+{{ end }}

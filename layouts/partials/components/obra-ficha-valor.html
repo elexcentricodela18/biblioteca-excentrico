@@ -1,0 +1,6 @@
+{{- $v := . -}}
+{{- if reflect.IsSlice $v -}}
+  {{- if $v }}{{ delimit $v ", " }}{{ end -}}
+{{- else -}}
+  {{- $v -}}
+{{- end -}}

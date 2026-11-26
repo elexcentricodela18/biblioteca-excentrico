@@ -1,0 +1,72 @@
+/* ═══════════════════════════════════════════════
+   SANGRÍA FRANCESA EN FICHA INDIVIDUAL (Obras)
+   (Se carga solo en /obras/[nombre-obra]/)
+═══════════════════════════════════════════════ */
+
+/* Contenedor padre relativo */
+.bloque-anual-ficha {
+  position: relative;
+  width: 100%;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+  border-bottom: 1px solid var(--borde);
+  padding-bottom: 3rem;
+}
+
+/* Columna del Año */
+.columna-anio-ficha {
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.anio-ficha-texto {
+  font-family: var(--serif-it);
+  font-size: clamp(2.5rem, 6vw, 3.8rem);
+  color: var(--obras);
+  font-weight: 400;
+  display: inline-block;
+  line-height: 0.9;
+  letter-spacing: -1px;
+  transition: transform 0.3s ease;
+}
+.anio-ficha-texto:hover { transform: translateX(-3px); }
+
+/* Columna del Contenido (Título + Ficha) */
+.bloque-contenido-ficha {
+  width: 100%;
+  max-width: 700px;
+}
+
+/* ── Desktop (>1200px): Sangría Francesa Real ── */
+@media (min-width: 1200px) {
+  .bloque-anual-ficha {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0;
+  }
+  .columna-anio-ficha {
+    position: absolute;
+    left: -160px; /* Idéntico a obras.css */
+    top: 0;
+    width: 140px; /* Espacio para años largos o texto extra */
+    text-align: right;
+    margin-bottom: 0;
+  }
+  .bloque-contenido-ficha {
+    margin-left: 0;
+  }
+}
+
+/* ── Mobile (<1200px): Apilado Natural ── */
+@media (max-width: 1199px) {
+  .bloque-anual-ficha {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .columna-anio-ficha {
+    position: relative;
+    text-align: left;
+  }
+}

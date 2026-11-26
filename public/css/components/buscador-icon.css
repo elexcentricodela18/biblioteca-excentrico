@@ -1,0 +1,133 @@
+/* ═══════════════════════════════════════════════
+   buscador-icon — botones icono del buscador (lupa / limpiar)
+   ═══════════════════════════════════════════════ */
+
+.buscador-form .buscar-btn,
+.buscador-form .buscar-clear {
+    box-sizing: border-box;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--buscador-btn-size, 30px);
+    height: var(--buscador-btn-size, 30px);
+    padding: 0;
+    margin: 0;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--grey-60);
+    cursor: pointer;
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease;
+}
+
+.buscador-form .buscar-btn {
+    right: var(--buscador-pad-inline, 16px);
+}
+
+.buscador-form .buscar-clear {
+    right: calc(
+        var(--buscador-pad-inline, 16px) + var(--buscador-btn-size, 30px) + var(--buscador-btn-gap, 12px)
+    );
+}
+
+.buscador-form .buscar-clear[hidden] {
+    display: none;
+}
+
+.buscador-form .buscar-btn:hover,
+.buscador-form .buscar-btn:focus-visible,
+.buscador-form .buscar-clear:hover,
+.buscador-form .buscar-clear:focus-visible {
+    color: var(--grey-100);
+    background: rgba(0, 0, 0, 0.06);
+}
+
+.buscador-form .buscar-btn:active,
+.buscador-form .buscar-clear:active {
+    color: var(--grey-100);
+    background: rgba(0, 0, 0, 0.1);
+}
+
+.buscador-form .buscar-btn:focus,
+.buscador-form .buscar-clear:focus {
+    outline: none;
+}
+
+.buscador-form .buscar-btn:focus-visible,
+.buscador-form .buscar-clear:focus-visible {
+    outline: 2px solid var(--grey-70);
+    outline-offset: 1px;
+}
+
+.buscador-form .buscar-clear .tooltip--below,
+.buscador-form .buscar-btn .tooltip--below {
+    top: calc(100% + 12px);
+}
+
+.buscador-form .buscar-clear-icon {
+    position: relative;
+    display: block;
+    width: 10px;
+    height: 10px;
+}
+
+.buscador-form .buscar-clear-icon::before,
+.buscador-form .buscar-clear-icon::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 10px;
+    height: 1px;
+    background: currentColor;
+}
+
+.buscador-form .buscar-clear-icon::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.buscador-form .buscar-clear-icon::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+body.home .buscador-form .buscar-btn,
+body.home .buscador-form .buscar-clear {
+    color: #ffffff;
+}
+
+body.home .buscador-form .buscar-btn:hover,
+body.home .buscador-form .buscar-btn:focus-visible,
+body.home .buscador-form .buscar-clear:hover,
+body.home .buscador-form .buscar-clear:focus-visible {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+body.home .buscador-form .buscar-btn:active,
+body.home .buscador-form .buscar-clear:active {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+body.pagina-blanca .buscador-form .buscar-btn,
+body.pagina-blanca .buscador-form .buscar-clear {
+    color: #000000;
+}
+
+body.pagina-blanca .buscador-form .buscar-btn:hover,
+body.pagina-blanca .buscador-form .buscar-btn:focus-visible,
+body.pagina-blanca .buscador-form .buscar-clear:hover,
+body.pagina-blanca .buscador-form .buscar-clear:focus-visible {
+    color: #000000;
+    background: rgba(0, 0, 0, 0.06);
+}
+
+body.pagina-blanca .buscador-form .buscar-btn:active,
+body.pagina-blanca .buscador-form .buscar-clear:active {
+    background: rgba(0, 0, 0, 0.1);
+}

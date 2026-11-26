@@ -1,0 +1,21 @@
+{{ $home := .IsHome }}
+<button
+  type="button"
+  class="mecenazgo{{ if $home }} mecenazgo--home{{ end }}"
+  aria-label="Crédito de Mecenazgo y Fundación Santander"
+  data-dialog-open
+  data-dialog-tipo="texto"
+  data-dialog-texto="{{ partial "mecenazgo-frase.html" . }}">
+  <img
+    class="mecenazgo__logo mecenazgo__logo--santander"
+    src="/img/mecenazgo/santander-{{ if $home }}neg{{ else }}pos{{ end }}.png"
+    alt=""
+    width="398"
+    height="120">
+  <img
+    class="mecenazgo__logo mecenazgo__logo--ba"
+    src="/img/mecenazgo/mecenazgo-{{ if $home }}blanco{{ else }}negro{{ end }}.png"
+    alt=""
+    width="456"
+    height="120">
+</button>

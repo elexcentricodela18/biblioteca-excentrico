@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} — {{ .Site.Title }}{{ end }}</title>
+
+  {{ partial "social-meta.html" . }}
+  {{ partial "json-ld.html" . }}
+
+  <!-- 1. Tokens de diseño + estilos base -->
+  <link rel="stylesheet" href="/css/tokens.css?v=5">
+  <link rel="stylesheet" href="/css/grid.css">
+  <link rel="stylesheet" href="/css/main.css?v=33">
+  <link rel="stylesheet" href="/css/menu.css?v=8">
+  <link rel="stylesheet" href="/css/components/btn-nav.css?v=2">
+  <link rel="stylesheet" href="/css/components/feature-box.css?v=2">
+  <link rel="stylesheet" href="/css/components/audio-bar.css">
+  <link rel="stylesheet" href="/css/components/video-block.css">
+  <link rel="stylesheet" href="/css/components/btn-up-to-top.css?v=3">
+  <link rel="stylesheet" href="/css/components/tabs.css?v=2">
+  <link rel="stylesheet" href="/css/components/tooltip.css">
+  <link rel="stylesheet" href="/css/components/buscador.css?v=4">
+  <link rel="stylesheet" href="/css/components/buscador-icon.css">
+  <link rel="stylesheet" href="/css/components/filters.css?v=5">
+  <link rel="stylesheet" href="/css/components/breadcrumb.css?v=2">
+  <link rel="stylesheet" href="/css/components/archivo-fila.css?v=10">
+  <link rel="stylesheet" href="/css/components/media-gallery.css?v=10">
+  <link rel="stylesheet" href="/css/components/media-lightbox.css?v=5">
+  <link rel="stylesheet" href="/css/components/dot-nav.css">
+  <link rel="stylesheet" href="/css/components/content-dialog.css?v=19">
+
+  <!-- 2. INYECCIÓN DINÁMICA DE CSS ESPECÍFICO -->
+  {{ range .Params.custom_css }}
+    <link rel="stylesheet" href="/css/{{ . }}.css{{ if eq . "section-page" }}?v=26{{ else if eq . "historia" }}?v=16{{ else if eq . "obra-ficha" }}?v=4{{ else if eq . "valentina" }}?v=5{{ else if eq . "alberto-ure" }}?v=9{{ else if eq . "legal-page" }}?v=2{{ else if eq . "components/archivo-list" }}?v=2{{ end }}">
+  {{ end }}
+
+  <!-- 3. Estilos condicionales por página (como el escenario de la Home) -->
+  {{ if .IsHome }}
+    <link rel="stylesheet" href="/css/escenario.css?v=9">
+    <link rel="stylesheet" href="/css/components/cookie-consent.css?v=2">
+    <link rel="stylesheet" href="/css/components/home-gate.css">
+    <script>
+      (function () {
+        try {
+          if (localStorage.getItem('excentrico-home-access') === 'granted') {
+            document.documentElement.classList.add('home-unlocked');
+          }
+        } catch (e) {
+          /* ignore */
+        }
+      })();
+    </script>
+  {{ end }}
+</head>
+
+<body class="{{ if .IsHome }}home{{ else }}pagina-blanca{{ end }}">
+
+  {{ partial "menu.html" . }}
+
+  {{ if .IsHome }}
+  <button id="hamburger" aria-label="Menú" aria-expanded="false">
+    <span class="ham-linea"></span>
+    <span class="ham-linea"></span>
+    <span class="ham-linea"></span>
+  </button>
+  {{ else }}
+    {{ partial "header.html" . }}
+  {{ end }}
+
+  <main>
+    {{ block "main" . }}{{ end }}
+  </main>
+
+  {{ if not .IsHome }}
+    {{ partial "footer.html" . }}
+  {{ end }}
+
+  {{ partial "components/media-lightbox.html" }}
+  {{ $dialogClass := "" }}
+  {{ if eq .Section "historia" }}{{ $dialogClass = "content-dialog--historia" }}{{ end }}
+  {{ if eq .Section "valentina-celebracion" }}{{ $dialogClass = "content-dialog--valentina" }}{{ end }}
+  {{ partial "components/content-dialog.html" (dict "class" $dialogClass) }}
+  {{ partial "colofon.html" . }}
+
+<!-- Scripts Globales -->
+  <script src="/js/menu.js" defer></script>
+  <script src="/js/buscador.js" defer></script>
+  <script src="/js/audio-bar.js" defer></script>
+  <script src="/js/video-exclusive-play.js" defer></script>
+  <script src="/js/tooltip.js" defer></script>
+  <script src="/js/btn-up-to-top.js" defer></script>
+  <script src="/js/media-lightbox.js?v=2" defer></script>
+  <script src="/js/valentina-dialog.js?v=8" defer></script>
+
+  <!-- Scripts Específicos por Página -->
+  {{ range .Params.custom_js }}
+    <script src="/js/{{ . }}.js" defer></script>
+  {{ end }}
+
+  {{ if .IsHome }}
+    <script src="/js/home-gate.js" defer></script>
+    <script src="/js/escenario.js?v=6" defer></script>
+    <script src="/js/cookie-consent.js" defer></script>
+  {{ end }}
+
+</body>
+</html>

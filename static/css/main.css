@@ -1,0 +1,966 @@
+/* ═══════════════════════════════════════════════
+   El excéntrico de la 18 — Sistema tipográfico
+   ═══════════════════════════════════════════════ */
+
+/* ── Fuentes ── */
+@font-face {
+  font-family: 'ChacoVF-Upright';
+  src: url('/fonts/ChacoVF-Upright.woff2') format('woff2-variations'),
+       url('/fonts/ChacoVF-Upright.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ChacoVF-Italic';
+  src: url('/fonts/ChacoVF-Italic.woff2') format('woff2-variations'),
+       url('/fonts/ChacoVF-Italic.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Archibrazo-VF-Upright';
+  src: url('/fonts/Archibrazo-VF-Upright.woff2') format('woff2-variations'),
+       url('/fonts/Archibrazo-VF-Upright.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Archibrazo-VF-Italic';
+  src: url('/fonts/Archibrazo-VF-Italic.woff2') format('woff2-variations'),
+       url('/fonts/Archibrazo-VF-Italic.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ── Variables semánticas (referencian tokens.css) ── */
+:root {
+  /* Texto y fondo */
+  --fondo:         var(--papel);
+  --texto:         var(--black);
+  --texto-suave:   var(--grey-80);
+  --texto-tenue:   var(--grey-60);
+  --suave:         var(--grey-80);   /* alias legacy */
+  --tenue:         var(--grey-60);   /* alias legacy */
+
+  /* Bordes */
+  --borde:         var(--grey-30);
+  --borde-fino:    var(--grey-50);
+  --borde-fuerte:  var(--grey-70);
+
+  /* Tipografía */
+  --serif:         'Archibrazo-VF-Upright', Georgia, serif;
+  --serif-it:      'Archibrazo-VF-Italic', Georgia, serif;
+  --sans:          'Archibrazo-VF-Upright', system-ui, sans-serif;
+  --sans-it:       'Archibrazo-VF-Italic', system-ui, sans-serif;
+
+  /* Layout (grilla → ver grid.css) */
+  --max:           var(--grid-frame-max);
+  --header-nav-height: 83px;
+  --hamburger-size: 44px;
+  --hamburger-right: 1.8rem;
+  --hamburger-top: calc((var(--header-nav-height) - var(--hamburger-size)) / 2);
+
+  /* Colores de sección (alias → tokens) */
+  --obras:         var(--color-obras);
+  --valentina:     var(--color-valentina);
+  --alberto-ure:   var(--color-alberto-ure);
+  --historia:      var(--color-historia);
+  --equipo:        var(--color-equipo);
+  --talleres:      var(--color-talleres);
+  --ciclos:        var(--color-ciclos);
+  --testimonios:   var(--color-testimonios);
+
+  /* Espacio header (línea) → título de página — alineado con ritmo título→contenido */
+  --page-header-offset: 48px;
+
+  /* Ritmo de bloques (título, media) vs. párrafos consecutivos */
+  --block-gap: 24px;
+  --paragraph-gap: 0.6em;
+}
+
+@media (max-width: 767px) {
+  :root {
+    --page-header-offset: 32px;
+  }
+}
+
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  background: var(--fondo);
+}
+
+body {
+  font-family: var(--sans);
+  font-weight: 300;
+  background: var(--fondo);
+  color: var(--texto);
+  line-height: 1.7;
+}
+
+/* ── Versalitas (Small Caps) ── */
+.caps {
+  font-variant-caps: small-caps;
+  font-feature-settings: "smcp" 1; /* Forzamos característica OpenType */
+  letter-spacing: 0.05em;
+  text-transform: none;
+}
+
+.versalita {
+  font-variant-caps: all-small-caps;
+  font-feature-settings: "c2sc" 1, "smcp" 1;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: inherit;
+}
+
+strong, b {
+  font-weight: 600;
+}
+
+/* ── Configuración de Itálicas Reales ── */
+/* Forzamos el cambio de familia y bloqueamos la síntesis 
+   para que el navegador no incline la redonda.
+*/
+i, em, .italic {
+  font-style: italic; /* Aun tengo que revisar esto, no está funcionando */
+  font-synthesis: none; 
+}
+
+/* Casos específicos para asegurar prioridad */
+h1 i, h1 em, h2 i, h2 em, h3 i, h3 em, .serif-it {
+  font-family: var(--serif-it) !important;
+}
+
+p i, p em, li i, li em, span i, span em, .sans-it {
+  font-family: var(--sans-it) !important;
+}
+
+/* Epígrafes en itálica: el título de obra (<em>) se invierte a redonda. */
+p.intro-relato-epigrafe em,
+figcaption.intro-relato-epigrafe em,
+figcaption.media-gallery__epigrafe em,
+figcaption.historia-hero-epigrafe em {
+  font-family: var(--serif) !important;
+  font-style: normal !important;
+}
+
+/* ── Tipografía General ── */
+h1, h2, h3 { font-family: var(--serif); font-weight: 400; line-height: 1.1; }
+
+/* Párrafos apilados (misma columna / ancho): más justos que el gap de bloque.
+   Solo <p>: las galerías también usan .intro-relato-ancho.
+   No aplica a lead + col (lado a lado). */
+p.intro-relato-lead + p.intro-relato-lead,
+p.intro-relato-lead + p.intro-relato-ancho,
+p.intro-relato-lead--solo + p.intro-relato-ancho,
+p.intro-relato-col + p.intro-relato-ancho,
+p.intro-relato-ancho + p.intro-relato-ancho,
+p.intro-relato-col--izq + p.intro-relato-col--izq,
+p.intro-relato-col--der + p.intro-relato-col--der,
+p.intro-relato-col--solo + p.intro-relato-col--solo,
+p.intro-relato-ancho + p.intro-relato-ancho--firma {
+  margin-top: calc(var(--paragraph-gap) - var(--block-gap));
+}
+
+.intro-relato-ancho.intro-relato-ancho--firma {
+  font-family: var(--serif-it, Georgia, serif);
+  font-style: italic;
+  font-synthesis: none;
+}
+
+/* Un renglón extra antes de un apartado (ficha técnica, etc.) */
+p.intro-relato-ancho + p.intro-relato-ancho--apartado,
+p.intro-relato-ancho + .intro-relato-subtitulo,
+.intro-relato-ancho + p.intro-relato-ancho--apartado {
+  margin-top: calc(var(--paragraph-gap) - var(--block-gap) + 1.5em);
+}
+
+.intro-relato-subtitulo + p.intro-relato-ancho {
+  margin-top: calc(var(--paragraph-gap) - var(--block-gap));
+}
+
+.intro-relato-ancho--referencia {
+  text-indent: -1.5em;
+  padding-left: 1.5em;
+}
+
+p.intro-relato-lead.intro-relato-lead--redonda {
+  font-family: var(--serif);
+  font-style: normal;
+}
+
+/* Cita larga (más de 5 líneas): sangría a ambos lados y un renglón extra
+   antes y después del bloque; los párrafos de una misma cita van juntos. */
+.intro-relato-ancho.intro-relato-ancho--cita {
+  padding-inline: 2.5em;
+}
+
+/* Cita distinta que sigue a otra dentro del mismo bloque */
+p.intro-relato-ancho--cita.intro-relato-ancho--cita-nueva {
+  text-indent: 1.5em;
+}
+
+p.intro-relato-ancho--cita + p.intro-relato-ancho--cita-nueva {
+  margin-top: calc(var(--paragraph-gap) - var(--block-gap) + 1.5em);
+}
+
+p.intro-relato-ancho:not(.intro-relato-ancho--cita) + p.intro-relato-ancho--cita,
+p.intro-relato-ancho--cita + :not(.intro-relato-ancho--cita) {
+  margin-top: calc(var(--paragraph-gap) - var(--block-gap) + 1.5em);
+}
+
+@media (max-width: 767px) {
+  .intro-relato-ancho.intro-relato-ancho--cita {
+    padding-inline: 1.25em;
+  }
+}
+
+main {
+    margin-top: 0px; /* Ajusta este valor según la separación contenido – header */
+    padding-bottom: 0px; /* Opcional: espacio antes del footer */
+}
+
+/* ── Site header — grilla 12 cols @ 1280 ──
+   Logo: inicio col 3
+   Línea: fin col 2 → inicio col 11 (excede el texto a izq. y der.)
+   Hamburguesa: col 12
+   ── */
+.site-header {
+  width: 100%;
+  --header-nav-height: 83px;
+  --hamburger-size: 44px;
+}
+
+.site-header-grid {
+  grid-template-rows: var(--header-nav-height);
+  align-items: center;
+  row-gap: 0;
+  height: var(--header-nav-height);
+  --header-col-w: calc((100% - (var(--grid-columns) - 1) * var(--grid-gutter)) / var(--grid-columns));
+}
+
+.site-header .site-header__breadcrumb {
+  grid-row: 1;
+  margin: 0;
+  justify-self: stretch;
+  align-self: center;
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.site-header #hamburger {
+  grid-row: 1;
+  align-self: center;
+}
+
+.site-header-rule {
+  grid-row: 1;
+  border: none;
+  border-top: 1px solid var(--borde);
+  margin: 0;
+  height: 0;
+  width: auto;
+  align-self: end;
+}
+
+@media (min-width: 1280px) {
+  .site-header .site-header__breadcrumb {
+    grid-column: 3 / 12;
+  }
+
+  .site-header #hamburger {
+    grid-column: 12 / 13;
+    justify-self: end;
+    align-self: center;
+  }
+
+  /*
+   * Fin col 2  → margin-left:  2×ancho + 1×gutter
+   * Inicio col 11 → margin-right: 2×ancho + 1×gutter (col 11 + gap + col 12)
+   */
+  .site-header-rule {
+    grid-column: 1 / -1;
+    margin-left: calc(2 * var(--header-col-w) + var(--grid-gutter));
+    margin-right: calc(2 * var(--header-col-w) + var(--grid-gutter));
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  /* TH @ 1024: logo col 2, línea fin col 1 → inicio col 12, hamburguesa col 12 */
+  .site-header .site-header__breadcrumb {
+    grid-column: 2 / 12;
+  }
+
+  .site-header #hamburger {
+    grid-column: 12 / 13;
+    justify-self: end;
+    align-self: center;
+  }
+
+  .site-header-rule {
+    grid-column: 1 / -1;
+    margin-left: calc(1 * var(--header-col-w));
+    margin-right: calc(1 * var(--header-col-w));
+  }
+}
+
+@media (max-width: 1023px) {
+  .site-header .site-header__breadcrumb,
+  .site-header #hamburger,
+  .site-header-rule {
+    grid-column: 1 / -1;
+  }
+
+  .site-header .site-header__breadcrumb {
+    grid-row: 1;
+    padding-right: calc(var(--hamburger-size) + 12px);
+  }
+
+  .site-header #hamburger {
+    grid-row: 1;
+    justify-self: end;
+  }
+
+  .site-header-rule {
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
+  }
+}
+
+/* Legacy .nav — mantener por compatibilidad si queda referenciado */
+.nav {
+  display: none;
+}
+
+.nav-logo {
+  font-family: var(--sans);
+  font-size: 1rem;
+  color: var(--texto);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.nav-links { display: flex; gap: 1.75rem; flex-wrap: wrap; }
+.nav-links a {
+  font-size: 0.72rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--texto-suave);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.nav-links a:hover { color: var(--texto); }
+
+.nav-obra {
+  display: flex;
+  justify-content: space-between; /* Empuja los links a los bordes */
+  align-items: center;
+  padding: 3rem 0; /* Espacio arriba y abajo del menú */
+  border-top: 1px solid rgba(255,255,255,0.5); /* Opcional: una línea sutil */
+}
+
+/* Ficha técnica */
+.ficha-grid { 
+  display: grid; 
+  grid-template-columns: clamp(100px, 15vw, 150px) 1fr; 
+}
+
+.ficha-label {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--texto-tenue);
+  padding: 0.2rem 0;
+  border-bottom: 1px solid var(--borde);
+  font-weight: 500;
+}
+
+.ficha-val {
+  font-size: 1.2rem;
+  letter-spacing: 0.01em;
+  color: var(--texto);
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--borde);
+  font-weight: 400;
+}
+
+/* ── Lista de obras ── */
+.obra-nombre {
+  font-family: var(--serif);
+  font-size: 1rem;
+  font-weight: 400;
+  transition: letter-spacing 0.2s;
+}
+
+/* Obras — estilos legacy movidos a obra-ficha.css */
+
+.obra-titulo-principal {
+  font-family: 'Archibrazo-VF-Upright', system-ui, serif;
+  font-size: clamp(2.4rem, 7vw, 3.8rem); /* Ajustado para que quepa mejor en una línea */
+  font-weight: 400;
+  line-height: 1.2;
+  margin: 0;
+  margin-bottom:0.5rem; 
+  display: flex;
+  align-items: baseline;
+  gap: 0.15em;
+  flex-wrap: wrap;
+}
+
+.highlight-color {
+  color: var(--obras) !important; /* Color para resaltar el año, en este caso corresponde al color del menu */
+  flex-shrink: 0;
+}
+
+
+/* Espacios entre cabecera y fichas */
+
+.divider {
+  height: 0px;
+  background: var(--borde);
+  margin: 0rem 0;
+  margin-top: 1rem; 
+}
+
+.obra-texto {
+  max-width: 600px;
+  margin-top:4rem;      /* Espacio base razonable */
+  margin-bottom: 4rem;
+}
+
+/* Si el texto viene justo después de un video, aumenta el margen */
+.media-video + .obra-texto {
+  margin-top: 2rem;
+}
+
+/* Estilo para los párrafos dentro de la sinopsis */
+.obra-texto p {
+  font-size: 1.2rem;
+  margin-bottom: var(--paragraph-gap);
+  line-height: 1.5;
+  color: var(--texto);
+}
+
+
+/* Contenedor de Video */
+
+.media-video {
+  margin: 3rem 0;
+  position: relative;
+  padding-bottom: 56.25%; /* Relación 16:9 */
+  height: 0;
+  overflow: hidden;
+}
+
+.media-video iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.media-video {
+  margin: 3rem 0;
+  position: relative;
+  padding-bottom: 56.25%; /* Proporción 16:9 */
+  height: 0;
+  overflow: hidden;
+  background: var(--fondo);
+}
+
+.media-video iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+
+/* Galería de Fotos */
+.obra-galeria {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.foto-ficha {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  border: 1px solid var(--borde);
+}
+
+/* Footer — misma grilla y regla que el header */
+
+.footer {
+  margin-top: 4rem;
+  padding-bottom: 2rem;
+}
+
+.footer-grid {
+  --footer-col-w: calc((100% - (var(--grid-columns) - 1) * var(--grid-gutter)) / var(--grid-columns));
+  row-gap: 2rem;
+  align-items: stretch;
+}
+
+.footer-rule {
+  grid-column: 1 / -1;
+  border: none;
+  border-top: 1px solid var(--borde);
+  margin: 0;
+  height: 0;
+  width: auto;
+}
+
+.footer-main {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  column-gap: 2rem;
+  row-gap: 2rem;
+  align-items: center;
+}
+
+.footer-nombre {
+  grid-column: 1;
+  grid-row: 1;
+  font-family: var(--serif);
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  color: var(--texto-tenue);
+  margin: 0;
+  min-width: 0;
+}
+
+.footer-meta {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  color: var(--texto-tenue);
+  margin: 0;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.footer-rule--inner {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  margin: 0;
+}
+
+.footer-creditos-bar {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.footer-creditos-end {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4.5rem;
+  margin-left: auto;
+  min-width: 0;
+}
+
+.site-redes {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  margin: 0;
+}
+
+.site-redes__link {
+  display: inline-flex;
+  align-items: center;
+  color: var(--texto);
+  text-decoration: none;
+}
+
+.site-redes__link:focus {
+  outline: none;
+}
+
+.site-redes__link:focus-visible {
+  outline: 1px solid var(--black);
+  outline-offset: 4px;
+}
+
+.site-redes__link:hover {
+  opacity: 0.7;
+}
+
+.site-redes__link--web {
+  font-family: var(--serif);
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  line-height: 1;
+}
+
+.site-redes__link--web .versalita {
+  letter-spacing: 0.08em;
+}
+
+.site-redes__icon {
+  display: block;
+  width: 22px;
+  height: 22px;
+}
+
+.site-redes__icon--facebook {
+  width: 22px;
+  height: 22px;
+}
+
+.site-redes__icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.creditos-enlace {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--serif);
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+  color: var(--texto-tenue);
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.creditos-enlace:focus {
+  outline: none;
+}
+
+.creditos-enlace:focus-visible {
+  outline: 1px solid var(--black);
+  outline-offset: 4px;
+}
+
+.creditos-enlace:hover {
+  color: var(--texto);
+}
+
+.mecenazgo {
+  display: flex;
+  align-items: center;
+  gap: 2.5rem;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.mecenazgo:focus {
+  outline: none;
+}
+
+.mecenazgo:focus-visible {
+  outline: 1px solid var(--black);
+  outline-offset: 4px;
+}
+
+body.home .mecenazgo:focus-visible {
+  outline-color: var(--white);
+}
+
+.mecenazgo img {
+  pointer-events: none;
+}
+
+.mecenazgo__logo {
+  display: block;
+  height: 36px;
+  width: auto;
+}
+
+@media (min-width: 1280px) {
+  .footer-rule:not(.footer-rule--inner),
+  .footer-main {
+    margin-left: calc(2 * var(--footer-col-w) + var(--grid-gutter));
+    margin-right: calc(2 * var(--footer-col-w) + var(--grid-gutter));
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .footer-rule:not(.footer-rule--inner),
+  .footer-main {
+    margin-left: calc(1 * var(--footer-col-w));
+    margin-right: calc(1 * var(--footer-col-w));
+  }
+}
+
+@media (max-width: 1023px) {
+  .footer {
+    padding-bottom: calc(38px + 54px + 12px);
+  }
+
+  .footer-grid {
+    row-gap: 1rem;
+  }
+
+  .footer-main {
+    grid-template-columns: 1fr;
+    row-gap: 1rem;
+  }
+
+  .footer-nombre,
+  .footer-meta,
+  .footer-rule--inner,
+  .footer-creditos-bar {
+    grid-column: 1;
+    grid-row: auto;
+    justify-self: stretch;
+  }
+
+  .footer-creditos-bar {
+    flex-direction: column;
+    align-items: stretch;
+    flex-wrap: nowrap;
+    gap: 1rem;
+  }
+
+  .footer-creditos-bar > .creditos-enlace {
+    align-self: flex-start;
+  }
+
+  .footer-meta {
+    text-align: left;
+    white-space: normal;
+  }
+
+  .mecenazgo {
+    gap: 2rem;
+  }
+
+  .mecenazgo__logo {
+    height: 28px;
+  }
+
+  .footer-creditos-end {
+    width: 100%;
+    flex-direction: column;
+    align-items: flex-end;
+    flex-wrap: nowrap;
+    gap: 1rem;
+  }
+
+  .site-redes {
+    gap: 30px;
+  }
+
+  .site-redes__icon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .site-redes__icon--facebook {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+@media (max-width: 767px) {
+  .footer-meta {
+    text-align: left;
+    white-space: nowrap;
+  }
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .nav-links { display: none; }
+  .ficha-grid { grid-template-columns: 90px 1fr; }
+}
+
+
+/* ═══════════════════════════════════════════════
+   TESTIMONIOS: Sangría Francesa (Espejo de Obras)
+═══════════════════════════════════════════════ */
+.bloque-indicador {
+  position: relative;
+  width: 100%;
+  border-bottom: 1px solid var(--borde);
+  padding-bottom: 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.bloque-indicador:last-child { border-bottom: none; padding-bottom: 2rem; }
+
+/* ─ Sangría Francesa: Nombres continuos (sin corte) ── */
+.indicador-marginal {
+  position: absolute;
+  left: -160px;
+  top: 0;
+  width: 150px; /* Un poco más de aire para nombres largos */
+  text-align: right;
+  z-index: 10;
+  margin-bottom: 0;
+}
+.indicador-titulo {
+  font-family: var(--serif-it);
+  font-size: clamp(2.5rem, 6vw, 3.8rem);
+  color: var(--testimonios);
+  text-decoration: none;
+  line-height: 0.95;
+  letter-spacing: -1px;
+  display: inline-block;
+  transition: transform 0.3s ease, color 0.3s ease;
+  word-break: break-word; /* Permite cortar solo si es EEEEXTRA largo */
+  overflow-wrap: break-word;
+}
+.indicador-titulo:hover {
+  color: var(--texto);
+  transform: translateX(-3px);
+}
+
+.bloque-contenido { width: 100%; max-width: 600px; }
+.testimonio-img-mini-wrap {
+  width: 100%; max-width: 320px;
+  aspect-ratio: 16/9; overflow: hidden;
+  border: 1px solid var(--borde); margin-bottom: 1rem;
+}
+.testimonio-img-mini { width: 100%; height: 100%; object-fit: cover; }
+
+.testimonio-cita-extracto {
+  font-family: var(--serif-it);
+  font-size: 1rem; line-height: 1.45;
+  color: var(--texto-suave); margin-bottom: 1rem;
+}
+.testimonio-leer-mas {
+  font-size: 0.72rem; color: var(--texto-tenue); text-decoration: none;
+}
+.testimonio-leer-mas:hover { color: var(--texto); }
+
+/* ── Desktop: Sangría absoluta idéntica a Obras ── */
+@media (min-width: 1200px) {
+  .bloque-indicador { 
+    flex-direction: row; 
+    gap: 0; 
+    align-items: baseline;
+    min-height: 60px; /* Asegura altura mínima para alineación */
+  }
+  .indicador-marginal {
+    position: absolute;
+    left: -230px;
+    top: 0;
+    width: 200px; /* Un poco más de aire para nombres largos */
+    text-align: right;
+    z-index: 10;
+    margin-bottom: 0;
+  }
+  .indicador-titulo {
+    font-family: var(--serif);
+    font-size: clamp(2.5rem, 6vw, 3rem);
+    color: var(--testimonios);
+    text-decoration: none;
+    line-height: 0.95;
+    font-weight: 400;
+    letter-spacing: -1px;
+    display: inline-block;
+    transition: transform 0.3s ease, color 0.3s ease;
+    word-break: break-word; /* Permite cortar solo si es EEEEXTRA largo */
+    overflow-wrap: break-word;
+  }
+
+  .indicador-titulo:hover {
+    color: var(--texto);
+    transform: translateX(-3px);
+  }
+  .bloque-contenido { 
+    margin-left: 0;
+    padding-top: 0.5rem; /* Alinea visualmente con el baseline del nombre */
+  }
+}
+/* Columna de Contenido (Foto + Cita + Link) */
+.bloque-contenido {
+  width: 100%;
+  max-width: 600px;
+}
+
+.testimonio-img-mini-wrap {
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  border: 0px solid var(--borde);
+  margin-top: .3rem;
+  margin-bottom: 1rem;
+  background: #f0f0f0;
+}
+
+.testimonio-img-mini {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.testimonio-cita-extracto {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: var(--texto-suave);
+  margin-bottom: 1rem;
+}
+
+.testimonio-leer-mas {
+  font-size: .8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--texto-tenue);
+  font-weight: 400;
+  text-decoration: none;
+}
+.testimonio-leer-mas:hover { color: var(--testimonios);
+  font-weight: 400;
+}
+/* ── Mobile: Apilado natural ── */
+@media (max-width: 1199px) {
+  .indicador-marginal {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 0.5rem;
+  }
+  .indicador-titulo {
+    font-size: 2.6rem;
+    white-space: normal; /* En mobile deja que baje si hace falta */
+  }
+}
+

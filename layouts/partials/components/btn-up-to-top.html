@@ -1,0 +1,13 @@
+{{/*
+  Botón Up To Top — reutilizable
+  Parámetros:
+    label (string) — aria-label (default: "Volver arriba")
+    class (string) — clases extra opcionales
+*/}}
+{{ $label := index . "label" | default "Volver arriba" }}
+{{ $extraClass := index . "class" | default "" }}
+{{ $btnClass := printf "btn-up-to-top%s" (cond $extraClass (printf " %s" $extraClass) "") }}
+
+<button type="button" class="{{ $btnClass }}" aria-label="{{ $label }}" hidden>
+  <span class="btn-up-to-top__icon" aria-hidden="true">⭡</span>
+</button>

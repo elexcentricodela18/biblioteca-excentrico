@@ -1,0 +1,19 @@
+{{/*
+  Intro lead itálica (Equipo, Testimonios, Ciclos, Obras, Talleres)
+  Parámetro: page (Page) — sección _index
+  Párrafos por línea en blanco; <em>título</em> → itálica.
+*/}}
+
+{{ $page := .page | default . }}
+{{ $intro := $page.Params.intro }}
+{{ if not $intro.lead }}{{ return }}{{ end }}
+
+{{ $raw := replace $intro.lead "\r\n" "\n" }}
+<section class="equipo-intro">
+{{ range split $raw "\n" }}
+  {{ $line := trim . " \t" }}
+  {{ if $line }}
+    <p class="equipo-intro__lead">{{ partial "helpers/versalitas.html" $line }}</p>
+  {{ end }}
+{{ end }}
+</section>

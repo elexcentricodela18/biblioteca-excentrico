@@ -1,0 +1,59 @@
+/* ═══════════════════════════════════════════════
+   Design tokens — colores del sitio
+   Editar SOLO este archivo para cambiar colores
+   en todas las pantallas.
+   ═══════════════════════════════════════════════ */
+
+:root {
+
+  /* ── Colores de sección ── */
+  --color-historia:     #FF4D4D;
+  --color-valentina:    #FF9B54;
+  --color-alberto-ure:  #FFC04D;
+  --color-equipo:       #55E055;
+  --color-talleres:     #55CDFC;
+  --color-testimonios:  #5555FF;
+  --color-ciclos:       #B555FF;
+  --color-obras:        #C4A484;
+
+  /* Componentes RGB (para rgba() con transparencia) */
+  --color-historia-rgb:     255, 77, 77;
+  --color-valentina-rgb:    255, 155, 84;
+  --color-alberto-ure-rgb:  255, 192, 77;
+  --color-equipo-rgb:       85, 224, 85;
+  --color-talleres-rgb:     85, 205, 252;
+  --color-testimonios-rgb:  85, 85, 255;
+  --color-ciclos-rgb:       181, 85, 255;
+  --color-obras-rgb:        196, 164, 132;
+
+  /* ── Escala de grises ── */
+  --grey-100:  #000000;  /* Black */
+  --grey-90:   #1C1C1C;
+  --grey-80:   #2B2B2B;
+  --grey-70:   #404040;
+  --grey-60:   #5C5C5C;
+  --grey-50:   #7A7A7A;
+  --grey-40:   #999999;
+  --grey-30:   #B8B8B8;
+  --grey-20:   #D4D4D4;
+  --grey-10:   #EAEAEA;
+  --grey-0:    #FFFFFF;  /* White */
+
+  /* Papel hueso — fondo de páginas interiores (gris tenue + amarillo + magenta) */
+  --papel:     #F5F0EC;
+  --papel-rgb: 245, 240, 236;
+
+  /* Alias cortos */
+  --black:  var(--grey-100);
+  --white:  var(--grey-0);
+
+  /* ── Breakpoints (referencia; no cambian por viewport) ── */
+  --bp-mobile:     360px;
+  --bp-tablet-v:   768px;
+  --bp-tablet-h:   1024px;
+  --bp-desktop:    1280px;
+
+  /* Ancho máximo del frame — no crece más allá de desktop */
+  --grid-frame-max: 1280px;
+
+}

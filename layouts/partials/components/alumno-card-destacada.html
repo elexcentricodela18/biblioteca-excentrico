@@ -1,0 +1,30 @@
+{{/*
+  Card destacada de ex alumno — video + cita + retrato
+  Parámetros: video, cita, foto { src, alt }, nombre, periodo
+*/}}
+<div class="alumno-card alumno-card--destacada">
+  <div class="alumno-card__media">
+    {{ partial "components/video-block.html" (.video | default dict) }}
+  </div>
+  <div class="alumno-card__body">
+    {{ with .cita }}
+    <blockquote class="alumno-card__cita">{{ . }}</blockquote>
+    {{ end }}
+    <div class="alumno-card__meta">
+      {{ with .foto }}
+      <img
+        class="alumno-card__avatar"
+        src="{{ .src | relURL }}"
+        alt="{{ .alt | default $.nombre }}"
+        width="48"
+        height="48"
+        loading="lazy"
+        decoding="async">
+      {{ end }}
+      <div class="alumno-card__identidad">
+        {{ with .nombre }}<p class="alumno-card__nombre">{{ . }}</p>{{ end }}
+        {{ with .periodo }}<p class="alumno-card__periodo">{{ . }}</p>{{ end }}
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,75 @@
+/* ═══════════════════════════════════════════════
+   feature-box — tarjeta cuadrada reutilizable
+   Estados: default (gris tenue) · hover (color sección)
+   ═══════════════════════════════════════════════ */
+
+.feature-box {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 36px 43px;
+    background: var(--white);
+    border-right: 1px solid var(--grey-40);
+    border-bottom: 1px solid var(--grey-40);
+    color: var(--grey-100);
+    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.feature-box__label {
+    margin: 0;
+    align-self: stretch;
+    font-family: var(--sans);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 21px;
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.02em;
+}
+
+.feature-box__title {
+    margin: 0;
+    align-self: stretch;
+    font-family: var(--serif);
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 28px;
+}
+
+.feature-box__body {
+    margin: 0;
+    align-self: stretch;
+    flex: 1;
+    font-family: var(--serif-it);
+    font-size: 18px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 21px;
+}
+
+/* Hover — color de sección Historia por defecto; override con modificadores */
+.feature-box:hover {
+    background: var(--color-historia);
+    border-color: var(--color-historia);
+    color: var(--grey-0);
+}
+
+.feature-box:hover .btn-nav--dark {
+    background: var(--grey-100);
+    color: var(--grey-0);
+}
+
+.feature-box:hover .btn-nav--dark:hover {
+    background: var(--grey-0);
+    color: var(--grey-100);
+}
+
+/* Variantes de color por sección */
+.feature-box--obras:hover       { background: var(--color-obras);       border-color: var(--color-obras); }
+.feature-box--valentina:hover   { background: var(--color-valentina);   border-color: var(--color-valentina); }
+.feature-box--alberto-ure:hover { background: var(--color-alberto-ure); border-color: var(--color-alberto-ure); }
+.feature-box--equipo:hover      { background: var(--color-equipo);      border-color: var(--color-equipo); }
+.feature-box--talleres:hover    { background: var(--color-talleres);    border-color: var(--color-talleres); }
+.feature-box--ciclos:hover      { background: var(--color-ciclos);      border-color: var(--color-ciclos); }
+.feature-box--testimonios:hover { background: var(--color-testimonios); border-color: var(--color-testimonios); }

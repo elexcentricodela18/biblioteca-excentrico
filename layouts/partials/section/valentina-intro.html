@@ -1,0 +1,62 @@
+{{/*
+  Bio de Valentina — dos columnas en el ancho central (cols 3–11),
+  mismo band que Equipo (.persona-intro / intro-relato).
+  Párrafos por línea en blanco; <em>obra</em> → itálica.
+  Parámetro: page (Page)
+*/}}
+{{ $page := .page | default . }}
+{{ $intro := $page.Params.intro }}
+{{ if not $intro.lead }}{{ return }}{{ end }}
+
+{{ $raw := replace $intro.lead "\r\n" "\n" }}
+{{ $paras := slice }}
+{{ range split $raw "\n" }}
+  {{ $line := trim . " \t" }}
+  {{ if $line }}
+    {{ $paras = $paras | append $line }}
+  {{ end }}
+{{ end }}
+{{ if eq (len $paras) 0 }}{{ return }}{{ end }}
+
+{{ $unaCol := eq ($intro.columnas | default 2) 1 }}
+
+{{ $left := slice }}
+{{ $right := slice }}
+{{ if or $unaCol (le (len $paras) 1) }}
+  {{ $left = $paras }}
+{{ else }}
+  {{ $total := 0 }}
+  {{ range $paras }}{{ $total = add $total (len .) }}{{ end }}
+  {{ $half := div $total 2 }}
+  {{ $acc := 0 }}
+  {{ range $paras }}
+    {{ if and (lt $acc $half) (lt (len $left) (sub (len $paras) 1)) }}
+      {{ $left = $left | append . }}
+    {{ else }}
+      {{ $right = $right | append . }}
+    {{ end }}
+    {{ $acc = add $acc (len .) }}
+  {{ end }}
+{{ end }}
+
+{{ if $right }}
+<div class="intro-relato-col intro-relato-col--izq valentina-intro__col">
+  {{ range $left }}
+    <p>{{ partial "helpers/versalitas.html" . }}</p>
+  {{ end }}
+</div>
+<div class="intro-relato-col intro-relato-col--der valentina-intro__col">
+  {{ range $right }}
+    <p>{{ partial "helpers/versalitas.html" . }}</p>
+  {{ end }}
+</div>
+{{ else }}
+<div class="intro-relato-col intro-relato-col--solo valentina-intro__col">
+  {{ range $left }}
+    <p>{{ partial "helpers/versalitas.html" . }}</p>
+  {{ end }}
+</div>
+{{ end }}
+{{ with $intro.firma }}
+<p class="intro-relato-ancho intro-relato-ancho--firma">{{ partial "helpers/versalitas.html" . }}</p>
+{{ end }}

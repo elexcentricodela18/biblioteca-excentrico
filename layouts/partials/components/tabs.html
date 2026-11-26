@@ -1,0 +1,28 @@
+{{/*
+  Tabs — componente reutilizable
+  Parámetros:
+    ariaLabel (string) — etiqueta del tablist
+    class (string) — clase extra en .tabs-bar
+    id (string) — id opcional en .tabs-bar
+    items (slice) — cada item: label, value, active (bool), class (string, opcional)
+  Nota: el valor va en data-tab-value (atributo estático; Hugo no permite data-* dinámicos).
+*/}}
+{{ $ariaLabel := index . "ariaLabel" | default "Tabs" }}
+{{ $class := index . "class" | default "" }}
+{{ $id := index . "id" | default "" }}
+{{ $items := index . "items" | default (slice) }}
+{{ $barClass := printf "tabs-bar%s" (cond $class (printf " %s" $class) "") }}
+
+<div class="{{ $barClass }}"{{ with $id }} id="{{ . }}"{{ end }}>
+  <div class="tabs" role="tablist" aria-label="{{ $ariaLabel }}">
+    {{- range $items -}}
+    <button
+      type="button"
+      class="tabs__tab{{ if .active }} is-active{{ end }}{{ with .class }} {{ . }}{{ end }}"
+      role="tab"
+      aria-selected="{{ if .active }}true{{ else }}false{{ end }}"
+      data-tab-value="{{ .value }}"
+    >{{ .label }}</button>
+    {{- end -}}
+  </div>
+</div>

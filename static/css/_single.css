@@ -1,0 +1,74 @@
+/* =══════════════════════════════════════════════
+   SANGRÍA FRANCESA EN DETALLE DE FICHA
+   ═══════════════════════════════════════════════ */
+
+/* Contenedor relativo de la obra */
+.bloque-anual-ficha {
+  position: relative;
+  width: 100%;
+  margin-top: 3rem;
+}
+
+/* ── Posicionamiento del Año en Ficha (Desktop) ── */
+@media (min-width: 1200px) {
+  .columna-anio-ficha {
+    position: absolute;
+    left: -160px; /* Desplazamiento exacto idéntico al listado */
+    top: -0.6rem;  /* Ajuste fino superior para nivelar con la línea base del título */
+    width: 130px;
+    text-align: right;
+    z-index: 10;
+  }
+}
+
+/* Tipografía idéntica del Año */
+.anio-ficha-texto {
+  font-family: var(--serif-it); /* Archibrazo Itálica */
+  font-size: clamp(2.5rem, 6vw, 3.8rem); 
+  color: var(--obras, #4dd2ff); /* Tu celeste identitario */
+  font-weight: 400;
+  display: inline-block;
+  line-height: 0.9;
+  letter-spacing: -1px;
+}
+
+/* Estilos de la cabecera interna */
+.obra-header {
+  margin-bottom: 1.5rem;
+}
+
+.obra-titulo-principal {
+  font-family: var(--sans, sans-serif);
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.1;
+  margin: 0;
+  color: var(--texto, #000000);
+}
+
+.obra-tipo-label {
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  color: var(--texto-tenue, #666666);
+  margin-top: 0.5rem;
+}
+
+/* Adaptabilidad para Pantallas Pequeñas (Mobile) */
+@media (max-width: 1199px) {
+  .bloque-anual-ficha {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .columna-anio-ficha {
+    position: relative;
+    top: 0;
+    text-align: left;
+    margin-bottom: 0.5rem;
+  }
+  
+  .anio-ficha-texto {
+    font-size: 2.8rem;
+  }
+}

@@ -1,0 +1,35 @@
+{{/*
+  Galería editorial adaptativa (imágenes y videos)
+  Parámetros:
+    items (slice) — cada ítem:
+      src           (string)  — ruta imagen (opcional si placeholder)
+      alt           (string)  — accesibilidad; si hay texto, también es epígrafe del lightbox
+      orientacion   (string)  — apaisada | vertical | cuadrada (default: apaisada)
+      tipo          (string)  — imagen | video (default: imagen)
+      video_url     (string)  — embed URL si tipo video
+      src           (string)  — mp4 local si tipo video (prioridad sobre video_url)
+      poster        (string)  — portada del mp4 local
+      placeholder   (bool)    — caja gris sin imagen
+      credito       (string)  — crédito fotográfico (lightbox si no hay epigrafe ni alt; el taller puede traer `credito` bajo la galería)
+      epigrafe      (string)  — leyenda bajo la foto y en el lightbox (gana sobre alt)
+      destacada     (bool)    — fila completa (`stack`); no comparte fila (tampoco como 3.ª de papin/triple)
+      completa      (bool)    — muestra la imagen entera, sin recorte 3:2 / 3:4
+      modulo        (string)  — `2x2`: foto grande (2 cols × 2 filas de la grilla de 3) + dos chicas al lado (`bento`); los lados se alternan
+    class (string) — clases extra en el contenedor
+
+  Empaquetado por filas (ver media-gallery-pack.html):
+    same   — double/triple/stack según N (evita resto 1: 4→2+2, 7→3+2+2)
+    pair   — V+A a la misma altura (1fr 2fr); dos pair seguidas se espejan
+    papin  — exactamente 1A+2V: apaisada ancha + dos verticales
+    stack  — una sola, vertical con max-width
+*/}}
+{{ $items := .items | default slice }}
+{{ $count := len $items }}
+{{ if lt $count 1 }}{{ return }}{{ end }}
+
+<div
+  class="media-gallery{{ with .class }} {{ . }}{{ end }}"
+  data-count="{{ $count }}"
+  aria-label="Galería de imágenes">
+  {{ partial "components/media-gallery-pack.html" (dict "items" $items) }}
+</div>

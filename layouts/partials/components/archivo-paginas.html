@@ -1,0 +1,50 @@
+{{/*
+  Listado cronológico del archivo — grupos por año + archivo-fila
+  Parámetros:
+    pages — slice de páginas Hugo (obras)
+    soloObras (bool) — omitir talleres, seminarios, ciclos y eventos
+*/}}
+{{ $pages := .pages }}
+{{ $soloObras := .soloObras | default false }}
+{{ $prevAnio := "" }}
+{{ range $pages }}
+{{ $year := .Params.anio | default .Date.Year }}
+{{ $anio := printf "%d" $year }}
+{{ $decada := mul (div $year 10) 10 }}
+{{ $tipo := partial "components/archivo-tipo-grupo.html" (dict "page" .) }}
+{{ $tipoGrupo := $tipo.tipoGrupo }}
+{{ $tipoLabel := $tipo.tipoLabel }}
+{{ $tipoGrupos := $tipo.tipoGrupos | default $tipoGrupo }}
+{{ $extraGrupo := $tipo.extraGrupo }}
+{{ $extraLabel := $tipo.extraLabel }}
+{{ if and $soloObras (ne $tipoGrupo "obras") }}
+  {{ continue }}
+{{ end }}
+{{ if ne $anio $prevAnio }}
+{{ if ne $prevAnio "" }}</div></div>{{ end }}
+<div class="archivo-grupo-anio" data-anio="{{ $anio }}">
+  <p class="archivo-anio">{{ $anio }}</p>
+  <div class="archivo-entradas">
+{{ $prevAnio = $anio }}
+{{ end }}
+{{ $dir := "" }}
+{{ if and .Params.direccion (ne .Params.direccion "Dirección") }}
+  {{ $dir = .Params.direccion }}
+{{ else if and .Params.director (ne .Params.director "Director") }}
+  {{ $dir = .Params.director }}
+{{ end }}
+{{ partial "components/archivo-fila.html" (dict
+    "href" .RelPermalink
+    "anio" $anio
+    "decada" $decada
+    "tipoGrupo" $tipoGrupo
+    "tipoGrupos" $tipoGrupos
+    "tipoLabel" $tipoLabel
+    "extraGrupo" $extraGrupo
+    "extraLabel" $extraLabel
+    "titulo" .Title
+    "extra" (partial "helpers/archivo-busqueda-extra.html" .)
+    "dir" $dir
+) }}
+{{ end }}
+{{ if ne $prevAnio "" }}</div></div>{{ end }}

@@ -1,0 +1,21 @@
+{{/*
+  Filtra redes[]: solo ítems con URL real.
+  Omite vacías, example.com y homepages de red sin usuario.
+  Recibe: slice de {plataforma, url, etiqueta?}
+  Devuelve: slice filtrado
+*/}}
+{{ $visibles := slice }}
+{{ range . }}
+  {{ $url := .url | default "" | strings.TrimSpace }}
+  {{ if $url }}
+    {{ $placeholder := or
+      (findRE `(?i)example\.com` $url)
+      (findRE `(?i)^https?://(www\.)?(instagram|facebook|twitter|x)\.com/?$` $url)
+      (eq $url "#")
+    }}
+    {{ if not $placeholder }}
+      {{ $visibles = $visibles | append . }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ return $visibles }}

@@ -1,0 +1,41 @@
+{{/*
+  Redes del teatro (web / Facebook / Instagram) para home y footer.
+  URLs: comunidad_excentrica.redes en /historia/.
+  Color: currentColor — negro en páginas claras, blanco en home.
+*/}}
+{{ $home := .IsHome }}
+{{ $redes := slice }}
+{{ with site.GetPage "/historia" }}
+  {{ with .Params.comunidad_excentrica }}
+    {{ $redes = .redes | default slice }}
+  {{ end }}
+{{ end }}
+{{ $redes = partial "helpers/redes-visibles.html" $redes }}
+{{ if lt (len $redes) 1 }}{{ return }}{{ end }}
+
+{{ $labels := dict
+  "web" "Sitio web"
+  "facebook" "Facebook"
+  "instagram" "Instagram"
+}}
+
+<nav class="site-redes{{ if $home }} site-redes--home{{ end }}" aria-label="Redes de El Excéntrico de la 18">
+  {{ range $redes }}
+    {{ $plataforma := .plataforma | default "web" }}
+    {{ $etiqueta := index $labels $plataforma | default (humanize $plataforma) }}
+    <a
+      class="site-redes__link{{ if eq $plataforma "web" }} site-redes__link--web{{ else }} site-redes__link--icon{{ end }}"
+      href="{{ .url }}"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="{{ $etiqueta }}, se abre en ventana nueva">
+      {{ if eq $plataforma "web" }}
+        <span class="versalita">www</span>
+      {{ else if eq $plataforma "facebook" }}
+        <span class="site-redes__icon site-redes__icon--facebook">{{ readFile "static/img/redes/facebook.svg" | safeHTML }}</span>
+      {{ else if eq $plataforma "instagram" }}
+        <span class="site-redes__icon site-redes__icon--instagram">{{ readFile "static/img/redes/instagram.svg" | safeHTML }}</span>
+      {{ end }}
+    </a>
+  {{ end }}
+</nav>

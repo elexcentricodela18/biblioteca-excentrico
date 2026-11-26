@@ -1,0 +1,220 @@
+/* ═══════════════════════════════════════
+   MENÚ GLOBAL — El excéntrico de la 18
+   ═══════════════════════════════════════ */
+
+/* ── Botón hamburguesa ── */
+#hamburger {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  z-index: 10060;
+  padding: 0;
+}
+
+/* Home: fijo arriba a la derecha */
+body.home #hamburger {
+  position: fixed;
+  top: var(--hamburger-top);
+  right: var(--hamburger-right);
+}
+
+/* Páginas interiores: misma esquina que home; en flujo hasta que se fija */
+body.pagina-blanca #hamburger {
+  position: static;
+}
+
+@media (min-width: 1280px) {
+  body.pagina-blanca #hamburger {
+    position: fixed;
+    top: var(--hamburger-top);
+    right: var(--hamburger-right);
+  }
+}
+
+@media (max-width: 1279px) {
+  body.pagina-blanca #hamburger {
+    position: static;
+    justify-self: end;
+    align-self: center;
+  }
+
+  body.pagina-blanca #hamburger.is-pinned {
+    position: fixed;
+    top: var(--hamburger-top);
+    right: var(--hamburger-right);
+  }
+}
+
+.ham-linea {
+  display: block;
+  width: 28px;
+  height: 1px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+/* Colores dinámicos del botón (Cerrado y Abierto) */
+body.home #hamburger .ham-linea { 
+    background-color: #ffffff !important; 
+}
+
+body.pagina-blanca #hamburger .ham-linea { 
+    background-color: #000000 !important; 
+}
+
+/* Animación de la X cuando está abierto */
+#hamburger.abierto .ham-linea:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+#hamburger.abierto .ham-linea:nth-child(2) { opacity: 0; transform: scaleX(0); }
+#hamburger.abierto .ham-linea:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+/* ── Panel del menú ── */
+#menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  z-index: 10050;
+  transform: translateX(100%);
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Ajuste: Dejamos el espacio superior exacto del "top" del header */
+  padding: 1.8rem 2.5rem 3rem; 
+  box-sizing: border-box;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 1024px) {
+  #menu {
+    width: 437px;
+  }
+}
+
+/* Fondos del panel según contexto */
+body.home #menu { 
+    background: rgba(0, 0, 0, 0.8); 
+    border-left: 0px solid rgba(255,255,255,0.1); 
+}
+body.pagina-blanca #menu { 
+    background: rgba(var(--papel-rgb), 0.92); 
+    border-left: 1px solid rgba(0,0,0,0.3); 
+}
+
+#menu.abierto { transform: translateX(0); }
+
+/* ── Navegación ── */
+#menu nav {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  --menu-nav-pad-block: 1.2rem;
+  --menu-nav-row-height: calc(var(--menu-nav-pad-block) * 2 + 1.1rem * 1.1);
+  padding-top: 3.3rem;
+}
+
+/* Home: sin fila «Inicio»; compensar para alinear con páginas interiores */
+body.home #menu nav {
+  padding-top: calc(3.3rem + var(--menu-nav-row-height));
+}
+
+#menu nav a {
+  display: flex;
+  align-items: baseline;
+  gap: 1.2rem;
+  text-decoration: none;
+  font-family: 'Archibrazo-VF-Upright', system-ui, sans-serif;
+  font-size: 1.1rem;
+  font-weight: 300;
+  padding: var(--menu-nav-pad-block) 1rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  z-index: 1;
+}
+
+/* Colores de texto y bordes */
+body.home #menu nav a { color: #ffffff; border-bottom: 1px solid rgba(255,255,255,0.2); }
+body.pagina-blanca #menu nav a { color: #000000; border-bottom: 1px solid rgba(0,0,0,0.3); }
+
+body.home #menu nav a:first-child { border-top: 1px solid rgba(255,255,255,0.2); }
+body.pagina-blanca #menu nav a:first-child { border-top: 1px solid rgba(0,0,0,0.3); }
+
+/* ── El Gradiente Arcoíris [Recuperado de fuente 1] ── */
+#menu nav a::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--color-arcoiris);
+  transform: translateX(-101%);
+  transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  z-index: -1;
+}
+
+/* ── Efectos al hacer Hover (Desplazamiento + Gradiente) ── */
+#menu nav a:hover {
+  letter-spacing: 0.05em;
+  padding-left: 2.5rem; /* El texto se mueve a la derecha */
+}
+
+#menu nav a:hover::before { 
+    transform: translateX(0); /* El gradiente entra */
+}
+
+/* ── Colores Arcoíris (Definición por hijo inicio desplazado al 30%) ── */
+#menu nav a[href*="_index"] { --color-arcoiris: linear-gradient(90deg, transparent 30%, rgba(255, 0, 255, 0.8) 100%); } /* Neutro */
+#menu nav a[href*="historia"] { --color-arcoiris: linear-gradient(90deg, transparent 30%, rgba(var(--color-historia-rgb), 0.8) 100%); }
+#menu nav a[href*="valentina"] { --color-arcoiris: linear-gradient(90deg, transparent 30%, rgba(var(--color-valentina-rgb), 0.8) 100%); }
+#menu nav a[href*="alberto-ure"] { --color-arcoiris: linear-gradient(90deg, transparent 30%, rgba(var(--color-alberto-ure-rgb), 0.8) 100%); }
+#menu nav a[href*="equipo"] { --color-arcoiris: linear-gradient(90deg, transparent 30%, rgba(var(--color-equipo-rgb), 0.8) 100%); }
+#menu nav a[href*="talleres"] { --color-arcoiris: linear-gradient(90deg, transparent 30%, rgba(var(--color-talleres-rgb), 0.8) 100%); }
+#menu nav a[href*="obras"] { --color-arcoiris: linear-gradient(90deg, transparent 30%, rgba(var(--color-obras-rgb), 0.8) 100%); }
+#menu nav a[href*="ciclos"] { --color-arcoiris: linear-gradient(90deg, transparent 30%, rgba(var(--color-ciclos-rgb), 0.8) 100%); }
+#menu nav a[href*="testimonios"] { --color-arcoiris: linear-gradient(90deg, transparent 30%, rgba(var(--color-testimonios-rgb), 0.8) 100%); }
+
+/* ── Números ── */
+.nav-num {
+  font-size: 1rem;
+  min-width: 1.4rem;
+  flex-shrink: 0;
+  font-weight: 400;
+  transition: all 0.4s ease;
+}
+body.home .nav-num { color: rgba(255,255,255,0.5); }
+body.pagina-blanca .nav-num { color: rgba(0,0,0,0.4); }
+
+#menu nav a:hover .nav-num { 
+  transform: scale(1.1) translateX(-5px);
+  color: inherit; 
+}
+
+/* Mobile: filas más compactas; misma alineación superior (padding-top del nav intacto) */
+@media (max-width: 767px) {
+  #menu nav {
+    --menu-nav-pad-block: 0.75rem;
+  }
+
+  #menu nav a {
+    gap: 0.85rem;
+    font-size: 1.05rem;
+    padding-inline: 0.75rem;
+  }
+
+  #menu nav a:hover {
+    padding-left: 1.5rem;
+  }
+
+  .nav-num {
+    font-size: 0.9rem;
+    min-width: 1.25rem;
+  }
+}

@@ -1,0 +1,33 @@
+{{ define "main" }}
+{{ $integrantes := sort .Pages "Weight" }}
+{{ $navItems := slice . }}
+{{ range $integrantes }}
+  {{ $navItems = $navItems | append . }}
+{{ end }}
+{{ $introNavId := printf "integrante-%s" (.Title | anchorize) }}
+
+<div class="section-page section-page--equipo" data-pagefind-body>
+  <div class="equipo-seccion-inicial">
+    <div class="grid-container">
+      <div class="grid section-header-grid">
+        <h1 class="section-titulo-pagina section-titulo-pagina--equipo">{{ partial "helpers/titulo-seccion.html" .Title }}</h1>
+      </div>
+    </div>
+
+    <div class="equipo-seccion-inicial__nav" id="{{ $introNavId }}" data-grupo-nav>
+      {{ partial "section/valentina-hero.html" (dict "hero" .Params.hero) }}
+      <div class="equipo-seccion-inicial__contenido">
+        {{ partial "section/equipo-intro.html" (dict "page" .) }}
+      </div>
+    </div>
+  </div>
+
+  {{ partial "components/dot-nav.html" (dict "items" $navItems "anchorPrefix" "integrante") }}
+
+  {{ range $integrantes }}
+  {{ partial "section/grupo-block.html" (dict "page" . "idPrefix" "integrante" "tema" "equipo") }}
+  {{ end }}
+
+  {{ partial "components/btn-up-to-top.html" dict }}
+</div>
+{{ end }}

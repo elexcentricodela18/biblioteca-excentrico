@@ -1,0 +1,127 @@
+.home-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 10200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  box-sizing: border-box;
+  background: var(--black);
+  color: var(--white);
+}
+
+html.home-unlocked .home-gate {
+  display: none;
+}
+
+html:not(.home-unlocked) body.home #hamburger,
+html:not(.home-unlocked) body.home .cookie-consent,
+html:not(.home-unlocked) body.home .home-creditos {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.home-gate__inner {
+  width: min(100%, 28rem);
+  text-align: left;
+}
+
+.home-gate__title {
+  margin: 0 0 1.25rem;
+  font-family: var(--sans);
+  font-size: clamp(1.4rem, 5.6vw, 2.45rem);
+  font-weight: 300;
+  line-height: 1.05;
+  color: var(--white);
+}
+
+.home-gate__status {
+  margin: 0 0 1.25rem;
+  font-family: var(--sans);
+  font-size: 1.25rem;
+  font-weight: 300;
+  font-variant-caps: small-caps;
+  letter-spacing: 0.06em;
+  color: var(--color-historia);
+}
+
+.home-gate__form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.home-gate__label {
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--grey-40);
+}
+
+.home-gate__fields {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.home-gate__input {
+  flex: 1;
+  min-width: 0;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--grey-60);
+  border-radius: 0;
+  background: transparent;
+  color: var(--white);
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.home-gate__input::placeholder {
+  color: var(--grey-50);
+}
+
+.home-gate__input:focus-visible {
+  outline: 1px solid var(--white);
+  outline-offset: 2px;
+}
+
+.home-gate__submit {
+  flex-shrink: 0;
+  padding: 0.75rem 1.25rem;
+  border: 1px solid var(--white);
+  border-radius: 0;
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--sans);
+  font-size: 0.9375rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.home-gate__submit:hover,
+.home-gate__submit:focus-visible {
+  background: var(--grey-20);
+}
+
+.home-gate__error {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 0.875rem;
+  color: var(--color-historia);
+}
+
+.home-gate__error[hidden] {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .home-gate__fields {
+    flex-direction: column;
+  }
+
+  .home-gate__submit {
+    width: 100%;
+  }
+}

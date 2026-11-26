@@ -1,0 +1,49 @@
+{{/*
+  Archivo fila — fila de listado reutilizable (obras, talleres, etc.)
+  Parámetros:
+    href (string) — enlace
+    anio (string) — año para data-anio
+    decada (string|int) — década para data-decada
+    tipoGrupo (string) — obras | talleres | ciclos | eventos (fondo de fila)
+    tipoGrupos (string) — grupos en los que aparece al filtrar (espacio)
+    tipoLabel (string) — texto del tag principal (Obra, Taller, Charla, …)
+    extraGrupo (string) — segundo tag (grupo CSS), opcional
+    extraLabel (string) — segundo tag (texto), opcional
+    titulo (string) — título visible
+    extra (string) — créditos, roles, taxonomías y sinopsis para búsqueda (data-extra)
+    dir (string) — director opcional (oculto en CSS por defecto)
+    class (string) — clases extra opcionales
+*/}}
+{{ $href := index . "href" }}
+{{ $anio := index . "anio" }}
+{{ $decada := index . "decada" }}
+{{ $tipoGrupo := index . "tipoGrupo" }}
+{{ $tipoGrupos := index . "tipoGrupos" | default $tipoGrupo }}
+{{ $tipoLabel := index . "tipoLabel" }}
+{{ $extraGrupo := index . "extraGrupo" | default "" }}
+{{ $extraLabel := index . "extraLabel" | default "" }}
+{{ $titulo := index . "titulo" }}
+{{ $extra := index . "extra" | default "" }}
+{{ $dir := index . "dir" | default "" }}
+{{ $extraClass := index . "class" | default "" }}
+{{ $rowClass := printf "archivo-fila%s" (cond $extraClass (printf " %s" $extraClass) "") }}
+
+<a href="{{ $href }}" class="{{ $rowClass }}"
+    data-anio="{{ $anio }}"
+    data-decada="{{ $decada }}"
+    data-tipo-grupo="{{ $tipoGrupo }}"
+    data-tipo-grupos="{{ $tipoGrupos }}"
+    data-titulo="{{ $titulo | lower }}"
+    data-extra="{{ $extra | htmlEscape }}">
+  <span class="archivo-fila-titulo">{{ $titulo }}</span>
+  {{- if $dir -}}
+  <span class="archivo-fila-dir"><span class="archivo-fila-dir-label">dir.</span> {{ $dir }}</span>
+  {{- end -}}
+  <span class="archivo-fila-tipos">
+    <span class="archivo-fila-tipo archivo-fila-tipo--{{ $tipoGrupo }}">{{ $tipoLabel }}</span>
+    {{- if and $extraGrupo $extraLabel -}}
+    <span class="archivo-fila-tipo archivo-fila-tipo--{{ $extraGrupo }}">{{ $extraLabel }}</span>
+    {{- end -}}
+  </span>
+  <span class="archivo-fila-arrow" aria-hidden="true">→</span>
+</a>

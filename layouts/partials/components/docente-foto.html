@@ -1,0 +1,39 @@
+{{/*
+  Retrato docente — formato 3/4 enmascarado
+  Parámetros:
+    src      (string) — ruta a la imagen
+    alt      (string) — texto alternativo
+    class    (string) — clases extra opcionales
+    credito  (string) — fotógrafa/o; se muestra como «Fotografía: …»
+    epigrafe (string) — leyenda libre bajo la foto (si no hay credito)
+*/}}
+{{ $src := "" }}
+{{ $alt := "" }}
+{{ $credito := "" }}
+{{ $epigrafe := "" }}
+{{ if reflect.IsMap . }}
+  {{ $src = .src }}
+  {{ $alt = .alt | default "" }}
+  {{ $credito = .credito | default "" }}
+  {{ $epigrafe = .epigrafe | default "" }}
+{{ else }}
+  {{ $src = . }}
+{{ end }}
+{{ if not $src }}{{ return }}{{ end }}
+
+<figure class="docente-foto{{ with .class }} {{ . }}{{ end }}">
+  <img
+    src="{{ $src | relURL }}"
+    alt="{{ $alt }}"
+    width="600"
+    height="800"
+    loading="lazy"
+    decoding="async">
+</figure>
+{{ if $credito }}
+<p class="docente-foto__credito">Fotografía: {{ $credito }}</p>
+{{ else }}
+{{ with $epigrafe }}
+<p class="docente-foto__credito">{{ . }}</p>
+{{ end }}
+{{ end }}

@@ -1,0 +1,19 @@
+{{- $p := .Params -}}
+{{- $temporadas := slice -}}
+{{- range $p.temporadas }}{{ $temporadas = $temporadas | append (string .) }}{{ end -}}
+<div class="ficha-grid">
+  {{ partial "components/obra-ficha-row.html" (dict "label" "Temporadas" "value" $temporadas) }}
+  {{ partial "components/obra-ficha-row.html" (dict "label" "Género" "value" $p.genero) }}
+  {{ partial "components/obra-ficha-row.html" (dict "label" "Autor" "value" $p.autor) }}
+  {{ partial "components/obra-ficha-row.html" (dict "label" "Elenco" "value" $p.elenco) }}
+  {{ partial "components/obra-ficha-row.html" (dict "label" "Vestuario" "value" $p.vestuario) }}
+  {{ partial "components/obra-ficha-row.html" (dict "label" "Iluminación" "value" $p.iluminacion) }}
+  {{ partial "components/obra-ficha-row.html" (dict "label" "Música" "value" $p.musica) }}
+  {{ partial "components/obra-ficha-row.html" (dict "label" "Sonido" "value" $p.sonido) }}
+  {{ partial "components/obra-ficha-row.html" (dict "label" "Dirección de arte" "value" $p.direccion_de_arte) }}
+  {{ partial "components/obra-ficha-row.html" (dict "label" "Escenografía" "value" $p.escenografia) }}
+  {{ partial "components/obra-ficha-row.html" (dict "label" "Fotografía" "value" $p.fotografia) }}
+  {{ partial "components/obra-ficha-row.html" (dict "label" "Asistencia de dirección" "value" $p.asistencia_de_direccion) }}
+  {{ partial "components/obra-ficha-row.html" (dict "label" "Docente" "value" $p.docente) }}
+  {{ partial "components/obra-ficha-row.html" (dict "label" "Dirección" "value" $p.direccion) }}
+</div>

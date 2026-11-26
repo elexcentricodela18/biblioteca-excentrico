@@ -1,0 +1,47 @@
+{{/*
+  Breadcrumb del site header — raíz del sitio + sección u obra.
+  Obras (ficha): Biblioteca… / Obras / [título truncable]
+  Resto: Biblioteca… / [sección]
+
+  Títulos de obra: máx. 54 caracteres en límite de palabra + «…»
+  (referencia: «…madres de los mineros mientras»)
+*/}}
+{{ $siteLabel := "Biblioteca del Excéntrico de la 18" }}
+{{ $items := slice (dict "label" $siteLabel "href" "/") }}
+
+{{ if and (eq .Section "obras") (eq .Kind "page") }}
+  {{ $obraTitleMax := 54 }}
+  {{ $fullTitle := .Title }}
+  {{ $scratch := newScratch }}
+  {{ $scratch.Set "obraLabel" $fullTitle }}
+
+  {{ if gt (len $fullTitle) $obraTitleMax }}
+    {{ $scratch.Set "built" "" }}
+    {{ range split $fullTitle " " }}
+      {{ $candidate := cond (eq ($scratch.Get "built") "") . (printf "%s %s" ($scratch.Get "built") .) }}
+      {{ if le (len $candidate) $obraTitleMax }}
+        {{ $scratch.Set "built" $candidate }}
+      {{ end }}
+    {{ end }}
+    {{ with $scratch.Get "built" }}
+      {{ $scratch.Set "obraLabel" (printf "%s..." .) }}
+    {{ else }}
+      {{ $scratch.Set "obraLabel" (printf "%s..." (truncate $obraTitleMax $fullTitle)) }}
+    {{ end }}
+  {{ end }}
+
+  {{ $obraLabel := $scratch.Get "obraLabel" }}
+  {{ $items = $items | append (dict "label" "Obras" "href" "/obras/") }}
+  {{ $items = $items | append (dict
+      "label" $obraLabel
+      "fullTitle" $fullTitle
+      "truncated" (ne $obraLabel $fullTitle)
+  ) }}
+{{ else }}
+  {{ $items = $items | append (dict "label" .Title) }}
+{{ end }}
+
+{{ partial "components/breadcrumb.html" (dict
+    "class" "site-header__breadcrumb"
+    "items" $items
+) }}

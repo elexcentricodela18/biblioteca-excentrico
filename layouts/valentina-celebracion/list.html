@@ -1,0 +1,44 @@
+{{ define "main" }}
+{{ $page := . }}
+{{ $hero := .Params.hero }}
+{{ $secciones := .Params.secciones }}
+{{ $cierre := .Params.cierre }}
+
+<div class="valentina-page">
+  <div class="grid-container">
+    <div class="grid historia-layout-grid">
+      <h1 class="historia-titulo-pagina valentina-titulo-pagina site-col-from-2 site-col-to-end">{{ partial "helpers/titulo-seccion.html" .Title }}</h1>
+    </div>
+  </div>
+
+  {{ partial "section/valentina-hero.html" (dict "hero" $hero) }}
+
+  {{ with .Params.intro }}
+  <section class="intro-relato valentina-intro">
+    <div class="grid-container">
+      <div class="grid intro-relato-grid">
+        {{ partial "section/valentina-intro.html" (dict "page" $page) }}
+      </div>
+    </div>
+  </section>
+  {{ end }}
+
+  {{ range $secciones }}
+  {{ partial "section/valentina-seccion.html" (dict "seccion" .) }}
+  {{ end }}
+
+  {{ with $cierre }}
+  {{ with .texto }}
+  <section class="valentina-cierre">
+    <div class="grid-container">
+      <div class="grid">
+        <blockquote class="valentina-cierre__frase site-col-from-2 site-col-to-end">{{ . | safeHTML }}</blockquote>
+      </div>
+    </div>
+  </section>
+  {{ end }}
+  {{ end }}
+
+  {{ partial "components/btn-up-to-top.html" dict }}
+</div>
+{{ end }}

@@ -1,0 +1,19 @@
+{{/*
+  Tooltip — componente reutilizable (WCAG / NN/g)
+  Parámetros:
+    text      (string) — texto visible
+    class     (string) — modificador opcional (tooltip--below | tooltip--left)
+    id        (string) — id único; se genera uno si falta
+    described (bool)   — true si añade info más allá del nombre accesible del trigger
+                         (activa aria-describedby vía data-tooltip-described en el trigger)
+*/}}
+{{ $text := index . "text" | default "" }}
+{{ $class := index . "class" | default "" }}
+{{ $described := index . "described" | default false }}
+{{ $id := index . "id" | default (printf "tooltip-%s" (md5 $text)) }}
+<span
+  class="tooltip{{ with $class }} {{ . }}{{ end }}"
+  id="{{ $id }}"
+  role="tooltip"
+  {{- if not $described }} aria-hidden="true"{{ end -}}
+>{{ partial "helpers/versalitas.html" (replaceRE `«([^»]+)»` `<em>$1</em>` $text) }}</span>

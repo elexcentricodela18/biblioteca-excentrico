@@ -1,0 +1,169 @@
+/* ═══════════════════════════════════════════════
+   buscador — campo de búsqueda reutilizable
+   WCAG 2.2: altura táctil 44px, contraste texto,
+   placeholder legible, focus visible (2.4.7)
+   ═══════════════════════════════════════════════ */
+
+.buscador-form {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    --buscador-pad-inline: 16px;
+    --buscador-btn-size: 30px;
+    /* 14px → centros a 44px con botones 30px (WCAG 2.5.5 espaciado) */
+    --buscador-btn-gap: 14px;
+}
+
+@media (max-width: 767px) {
+    .buscador-form {
+        /* NN/g + WCAG 2.5.5: objetivo táctil 44px en mobile */
+        --buscador-btn-size: 44px;
+        --buscador-btn-gap: 8px;
+    }
+}
+
+.buscar-input {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 44px;
+    padding-block: 11px;
+    padding-inline: var(--buscador-pad-inline) calc(var(--buscador-pad-inline) + var(--buscador-btn-size));
+    margin: 0;
+    border: 1px solid var(--grey-30);
+    border-radius: 40px;
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 22px;
+    color: var(--grey-100);
+    background-color: var(--white);
+    box-shadow: none;
+    -webkit-appearance: none;
+    appearance: none;
+    transition:
+        background-color 0.15s ease,
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.buscador-form:has(.buscar-clear:not([hidden])) .buscar-input {
+    padding-inline-end: calc(
+        var(--buscador-pad-inline) + var(--buscador-btn-size) + var(--buscador-btn-gap) + var(--buscador-btn-size)
+    );
+}
+
+.buscar-input::placeholder {
+    color: var(--grey-60);
+    opacity: 1;
+}
+
+.buscar-input:focus::placeholder,
+.buscar-input:focus-visible::placeholder {
+    color: transparent;
+    opacity: 0;
+}
+
+.buscar-input:hover {
+    border-color: var(--grey-40);
+    background-color: #ededed;
+}
+
+/* Focus: blanco otra vez + halo (sin outline doble) */
+.buscar-input:focus,
+.buscar-input:focus-visible {
+    outline: none;
+    border-color: var(--grey-20);
+    background-color: var(--white);
+    box-shadow:
+        0 0 0 1px rgba(184, 184, 184, 0.28),
+        0 0 12px 5px rgba(184, 184, 184, 0.18),
+        0 0 26px 10px rgba(184, 184, 184, 0.1),
+        0 0 42px 18px rgba(184, 184, 184, 0.04);
+}
+
+/* Menú — home (fondo oscuro) */
+body.home .buscar-input {
+    color: var(--grey-0);
+    background-color: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.28);
+}
+
+body.home .buscar-input::placeholder {
+    color: rgba(255, 255, 255, 0.72);
+}
+
+body.home .buscar-input:hover {
+    background-color: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+body.home .buscar-input:focus,
+body.home .buscar-input:focus-visible {
+    border-color: rgba(255, 255, 255, 0.55);
+    background-color: rgba(255, 255, 255, 0.18);
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.12),
+        0 0 10px 3px rgba(255, 255, 255, 0.14),
+        0 0 22px 8px rgba(255, 255, 255, 0.06);
+}
+
+/* Páginas interiores (fondo claro) */
+body.pagina-blanca .buscar-input {
+    color: var(--grey-100);
+    background-color: var(--white);
+    border-color: var(--grey-30);
+}
+
+body.pagina-blanca .buscar-input::placeholder {
+    color: var(--grey-60);
+}
+
+body.pagina-blanca .buscar-input:hover {
+    background-color: #ededed;
+    border-color: var(--grey-40);
+}
+
+body.pagina-blanca .buscar-input:focus,
+body.pagina-blanca .buscar-input:focus-visible {
+    background-color: var(--white);
+}
+
+/* Sin botón nativo de limpiar en type=search */
+.buscar-input::-webkit-search-cancel-button,
+.buscar-input::-webkit-search-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+/* Caja visual incluye lente + mango para centrado correcto en el botón */
+.lupa-dibujo {
+    position: relative;
+    display: block;
+    flex-shrink: 0;
+    width: 14px;
+    height: 12px;
+}
+
+.lupa-dibujo::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    box-sizing: border-box;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    border: 1px solid currentColor;
+}
+
+.lupa-dibujo::after {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 9px;
+    width: 6px;
+    height: 1px;
+    background: currentColor;
+    transform: rotate(45deg);
+    transform-origin: 0 50%;
+}

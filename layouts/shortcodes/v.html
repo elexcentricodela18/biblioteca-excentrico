@@ -1,0 +1,2 @@
+{{- /* Versalitas en Markdown de fichas: {{< v >}}ARTEI{{< /v >}} */ -}}
+{{- partial "helpers/versalitas.html" (dict "texto" (printf "<v>%s</v>" (.Inner | strings.TrimSpace))) -}}

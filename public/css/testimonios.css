@@ -1,0 +1,115 @@
+/* ═══════════════════════════════════════════════
+   TESTIMONIOS — Layout & Componentes
+   (Depende de :root y variables de main.css)
+═══════════════════════════════════════════════ */
+
+/* Contenedor de cada bloque (Nombre + Contenido) */
+.bloque-indicador {
+  position: relative;
+  width: 100%;
+  border-bottom: 1px solid var(--borde);
+  padding-bottom: 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.bloque-indicador:last-child { border-bottom: none; padding-bottom: 2rem; }
+
+/* Columna de la Sangría (Nombres) */
+.indicador-marginal {
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.indicador-titulo {
+  font-family: var(--serif-it);
+  font-size: clamp(2.5rem, 6vw, 3.8rem);
+  color: var(--testimonios);
+  text-decoration: none;
+  line-height: 0.95;
+  letter-spacing: -1px;
+  display: inline-block;
+  transition: transform 0.3s ease, color 0.3s ease;
+  overflow-wrap: break-word;
+}
+.indicador-titulo:hover {
+  color: var(--texto);
+  transform: translateX(-3px);
+}
+
+/* Columna de Contenido (Foto + Cita + Link) */
+.bloque-contenido {
+  width: 100%;
+  max-width: 600px;
+}
+
+.testimonio-img-mini-wrap {
+  width: 100%;
+  max-width: 320px;
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  border: 0px solid var(--borde);
+  margin-top: .3rem;
+  margin-bottom: 1rem;
+  background: #f0f0f0;
+}
+
+.testimonio-img-mini {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.testimonio-cita-extracto {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: var(--texto-suave);
+  margin-bottom: 1rem;
+}
+
+.testimonio-leer-mas {
+  font-size: .8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: var(--texto-tenue);
+  font-weight: 400;
+  text-decoration: none;
+}
+.testimonio-leer-mas:hover { color: var(--testimonios);
+  font-weight: 400;
+}
+
+/* ── Desktop (>1200px): Sangría Francesa Real ─ */
+@media (min-width: 1200px) {
+  .bloque-indicador {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0;
+  }
+  
+  .indicador-marginal {
+    position: absolute;
+    left: -160px; /* Exactamente igual que .columna-anio en obras.css */
+    top: 0;
+    width: 150px; /* Ancho suficiente para nombres largos sin romper */
+    text-align: right;
+    margin-bottom: 0;
+  }
+}
+
+/* ── Mobile (<1200px): Apilado natural ── */
+@media (max-width: 1199px) {
+  .indicador-marginal {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: 100%;
+    text-align: left;
+    margin-bottom: 0.5rem;
+  }
+  .indicador-titulo {
+    font-size: 2.6rem;
+    white-space: normal;
+  }
+}

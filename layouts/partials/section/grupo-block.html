@@ -1,0 +1,167 @@
+{{/*
+  Bloque editorial reutilizable (ciclos, docentes, etc.)
+  Parámetros:
+    page          — página Hugo (ficha hija)
+    idPrefix      — prefijo de ancla (ciclo, docente)
+    tema          — ciclos | talleres (modificador de color)
+    subitemsKey   — clave front matter de subtítulos (eventos, talleres)
+*/}}
+{{ $page := .page }}
+{{ $idPrefix := .idPrefix | default "grupo" }}
+{{ $tema := .tema | default "ciclos" }}
+{{ $subitemsKey := .subitemsKey | default "eventos" }}
+{{ $p := $page.Params }}
+{{ $subitems := index $p $subitemsKey }}
+{{ $id := printf "%s-%s" $idPrefix ($page.Title | anchorize) }}
+
+{{ $docenteTexto := $p.intro | default $p.texto }}
+{{ range $p.bloques }}
+  {{ if eq .tipo "texto" }}
+    {{ with .texto }}{{ $docenteTexto = . }}{{ end }}
+  {{ else if eq .tipo "ancho" }}
+    {{ with .texto }}{{ $docenteTexto = . }}{{ end }}
+  {{ else if eq .tipo "dos-columnas" }}
+    {{ $docenteTexto = printf "%s %s" .col_izq .col_der }}
+  {{ else if eq .tipo "lead-col" }}
+    {{ with .texto }}{{ $docenteTexto = . }}{{ end }}
+  {{ end }}
+{{ end }}
+
+{{ $personaIntroLayout := and (in (slice "talleres" "equipo") $tema) $p.foto }}
+{{ $redesVisibles := partial "helpers/redes-visibles.html" ($p.redes | default slice) }}
+{{ $hasCuerpo := or (and (not $personaIntroLayout) (or $p.bloques $p.lead $p.intro)) $p.galeria $p.videos $p.audios $p.video $subitems }}
+
+<section class="grupo-section" id="{{ $id }}" data-grupo-nav>
+  <div class="grid-container">
+    <div class="grid grupo-header-grid">
+      <h2 class="grupo-titulo grupo-titulo--{{ $tema }} site-col-from-2 site-col-to-end">{{ partial "helpers/versalitas.html" (dict "texto" $page.Title "sin_siglas" true) }}</h2>
+
+      {{ if $personaIntroLayout }}
+      {{ $foto := $p.foto }}
+      {{ if not (reflect.IsMap $p.foto) }}
+        {{ $foto = dict "src" $p.foto "alt" $page.Title }}
+      {{ end }}
+      <div class="persona-intro grid">
+        <div class="docente-foto-wrap">
+          {{ partial "components/docente-foto.html" $foto }}
+        </div>
+        {{ if or $p.rol $docenteTexto $redesVisibles }}
+        <div class="persona-intro__col">
+          {{ with $p.rol }}
+          <p class="grupo-rol">{{ . }}</p>
+          {{ end }}
+          {{ with $docenteTexto }}
+          <div class="persona-intro__texto">
+            {{ partial "helpers/texto-fichas.html" . }}
+          </div>
+          {{ end }}
+          {{ with $redesVisibles }}
+          <div class="testimonio-redes-wrap">
+            {{ partial "components/redes-sociales.html" (dict "items" . "persona" $page.Title) }}
+          </div>
+          {{ end }}
+        </div>
+        {{ end }}
+      </div>
+      {{ else }}
+      {{ with $p.foto }}
+      {{ $foto := . }}
+      {{ if not (reflect.IsMap .) }}
+        {{ $foto = dict "src" . "alt" $page.Title }}
+      {{ end }}
+      <div class="docente-foto-wrap">
+        {{ partial "components/docente-foto.html" $foto }}
+      </div>
+      {{ end }}
+      {{ with $p.rol }}
+      <p class="grupo-rol site-col-from-2 site-col-to-end">{{ . }}</p>
+      {{ end }}
+      {{ end }}
+    </div>
+  </div>
+
+  {{ if $hasCuerpo }}
+  <section class="grupo-cuerpo intro-relato">
+    <div class="grid-container">
+      <div class="grid intro-relato-grid">
+
+        {{ if not $personaIntroLayout }}
+        {{ partial "section/texto-bloques.html" (dict "bloques" $p.bloques "lead" $p.lead "intro" $p.intro) }}
+        {{ end }}
+
+        {{ with $p.galeria }}
+        <div class="section-media-wrap intro-relato-ancho">
+          {{ partial "components/media-gallery.html" (dict "items" .) }}
+        </div>
+        {{ end }}
+
+        {{ with $p.videos }}
+        <div class="section-media-wrap intro-relato-ancho">
+          {{ partial "components/media-gallery.html" (dict "items" .) }}
+        </div>
+        {{ end }}
+
+        {{ with $p.audios }}
+        <div class="section-audios-wrap intro-relato-ancho">
+          {{ range . }}
+          {{ partial "components/audio-bar.html" . }}
+          {{ end }}
+        </div>
+        {{ end }}
+
+        {{ with $p.video }}
+        <div class="section-media-wrap intro-relato-ancho">
+          {{ partial "components/video-block.html" . }}
+        </div>
+        {{ end }}
+
+        {{ range $subitems }}
+        {{ if or .titulo .galeria .bloques .audios .lead .texto .intro .epigrafe .video }}
+        <div class="section-sticky-group">
+          {{ with .titulo }}
+          <h3 class="intro-relato-titulo">{{ partial "helpers/versalitas.html" (dict "texto" . "sin_siglas" true) }}</h3>
+          {{ end }}
+          <div class="section-sticky-group__cuerpo">
+            {{ partial "section/texto-bloques.html" (dict "bloques" .bloques "lead" .lead "texto" .texto "intro" .intro "detalles" .detalles) }}
+
+            {{ $credito := .credito }}
+            {{ $epigrafe := .epigrafe }}
+            {{ with .galeria }}
+            <div class="section-media-wrap intro-relato-ancho">
+              {{ partial "components/media-gallery.html" (dict "items" .) }}
+              {{ with $epigrafe }}
+              <p class="intro-relato-epigrafe">{{ partial "helpers/versalitas.html" . }}</p>
+              {{ end }}
+              {{ with $credito }}
+              <p class="media-gallery__credit">Fotografía: {{ . }}</p>
+              {{ end }}
+            </div>
+            {{ else }}
+            {{ with $epigrafe }}
+            <p class="intro-relato-epigrafe intro-relato-ancho">{{ partial "helpers/versalitas.html" . }}</p>
+            {{ end }}
+            {{ end }}
+
+            {{ with .video }}
+            <div class="section-media-wrap intro-relato-ancho">
+              {{ partial "components/video-block.html" . }}
+            </div>
+            {{ end }}
+
+            {{ with .audios }}
+            <div class="section-audios-wrap intro-relato-ancho">
+              {{ range . }}
+              {{ partial "components/audio-bar.html" . }}
+              {{ end }}
+            </div>
+            {{ end }}
+          </div>
+        </div>
+        {{ end }}
+        {{ end }}
+
+      </div>
+    </div>
+  </section>
+  {{ end }}
+</section>

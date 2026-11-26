@@ -1,0 +1,129 @@
+/* ═══════════════════════════════════════════════
+   Tooltip — componente reutilizable
+   WCAG: contraste, focus, Escape (1.4.13), solo hover en puntero fino
+   NN/g: refuerzo visual; no sustituye nombre accesible del trigger
+   ═══════════════════════════════════════════════ */
+
+.tooltip-trigger {
+    position: relative;
+}
+
+.tooltip {
+    position: absolute;
+    z-index: 2;
+    padding: 6px 10px;
+    background: var(--grey-100);
+    color: var(--grey-0);
+    font-family: var(--sans, sans-serif);
+    font-size: 0.8125rem;
+    line-height: 1.25;
+    white-space: nowrap;
+    border-radius: 4px;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.15s ease, visibility 0.15s ease;
+}
+
+/* Cuña — indica el trigger al que pertenece el tooltip */
+.tooltip::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border: 6px solid transparent;
+}
+
+.tooltip--below {
+    top: calc(100% + 4px);
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.tooltip--below::after {
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-bottom-color: var(--grey-100);
+}
+
+.tooltip--left {
+    right: calc(100% + 4px);
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.tooltip--left::after {
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    border-left-color: var(--grey-100);
+}
+
+/* Puente invisible trigger → tooltip (WCAG 1.4.13 — contenido hoverable) */
+@media (hover: hover) and (pointer: fine) {
+    .tooltip-trigger:has(.tooltip--below)::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 100%;
+        width: max(100%, 7.5rem);
+        height: 6px;
+        transform: translateX(-50%);
+        pointer-events: auto;
+        display: none;
+    }
+
+    .tooltip-trigger:has(.tooltip--left)::before {
+        content: "";
+        position: absolute;
+        right: 100%;
+        top: 50%;
+        width: 6px;
+        height: max(100%, 2rem);
+        transform: translateY(-50%);
+        pointer-events: auto;
+        display: none;
+    }
+
+    .tooltip-trigger:hover::before,
+    .tooltip-trigger:focus-within::before {
+        display: block;
+    }
+
+    .tooltip-trigger:not(.is-tooltip-dismissed):hover .tooltip {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+/* Teclado: visible en foco aunque no haya hover fino */
+.tooltip-trigger:not(.is-tooltip-dismissed):focus-visible .tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+.tooltip-trigger.is-tooltip-dismissed .tooltip {
+    opacity: 0 !important;
+    visibility: hidden !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tooltip {
+        transition: none;
+    }
+}
+
+@media (forced-colors: active) {
+    .tooltip {
+        border: 1px solid CanvasText;
+    }
+
+    .tooltip--below::after {
+        border-bottom-color: CanvasText;
+    }
+
+    .tooltip--left::after {
+        border-left-color: CanvasText;
+    }
+}

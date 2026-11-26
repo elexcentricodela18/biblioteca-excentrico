@@ -1,0 +1,164 @@
+/* ═══════════════════════════════════════════════
+   archivo-fila — fila de listado reutilizable
+   ═══════════════════════════════════════════════ */
+
+.archivo-fila {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: 0.5rem 1rem;
+    padding-block: 0.75rem;
+    padding-inline: 16px;
+    /* Solo border-bottom: cada separador es 1px (sin sumar top+bottom entre filas) */
+    border-top: none;
+    border-bottom: 1px solid var(--grey-30);
+    text-decoration: none;
+    color: inherit;
+    transition: background 0.15s ease;
+}
+
+/* Filete superior del grupo (una sola vez; no va en cada fila) */
+.archivo-entradas {
+    border-top: 1px solid var(--grey-30);
+}
+
+/* Sin borde solo en la última fila del listado completo (no por grupo-año) */
+#archivo-lista > .archivo-grupo-anio:last-child .archivo-fila:last-child,
+#obras-lista > .archivo-grupo-anio:last-child .archivo-fila:last-child {
+    border-bottom: none;
+}
+
+.archivo-fila[hidden] {
+    display: none;
+}
+
+/* Fondo y hover por tipología (data-tipo-grupo en archivo-fila.html) */
+.archivo-fila[data-tipo-grupo="obras"] {
+    background: rgba(var(--color-obras-rgb), 0.1);
+}
+
+.archivo-fila[data-tipo-grupo="talleres"] {
+    background: rgba(var(--color-talleres-rgb), 0.1);
+}
+
+.archivo-fila[data-tipo-grupo="ciclos"] {
+    background: rgba(var(--color-ciclos-rgb), 0.1);
+}
+
+.archivo-fila[data-tipo-grupo="eventos"] {
+    background: rgba(var(--color-ciclos-rgb), 0.1);
+}
+
+.archivo-fila[data-tipo-grupo="obras"]:hover,
+.archivo-fila[data-tipo-grupo="obras"]:focus-visible {
+    background: rgba(var(--color-obras-rgb), 0.2);
+    outline: none;
+}
+
+.archivo-fila[data-tipo-grupo="talleres"]:hover,
+.archivo-fila[data-tipo-grupo="talleres"]:focus-visible {
+    background: rgba(var(--color-talleres-rgb), 0.2);
+    outline: none;
+}
+
+.archivo-fila[data-tipo-grupo="ciclos"]:hover,
+.archivo-fila[data-tipo-grupo="ciclos"]:focus-visible {
+    background: rgba(var(--color-ciclos-rgb), 0.2);
+    outline: none;
+}
+
+.archivo-fila[data-tipo-grupo="eventos"]:hover,
+.archivo-fila[data-tipo-grupo="eventos"]:focus-visible {
+    background: rgba(var(--color-ciclos-rgb), 0.2);
+    outline: none;
+}
+
+.archivo-fila:hover .archivo-fila-arrow,
+.archivo-fila:focus-visible .archivo-fila-arrow {
+    transform: translateX(4px);
+    opacity: 1;
+}
+
+.archivo-fila-titulo {
+    font-family: var(--serif);
+    font-size: clamp(1rem, 1.5vw, 1.125rem);
+    font-weight: 400;
+    color: var(--texto);
+    line-height: 1.3;
+    margin: 0;
+}
+
+.archivo-fila-dir {
+    display: none;
+}
+
+.archivo-fila-dir-label {
+    font-style: normal;
+    font-size: 0.875rem;
+    letter-spacing: 0.05em;
+    opacity: 0.6;
+}
+
+.archivo-fila-tipos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.35rem;
+    grid-column: 2;
+}
+
+.archivo-fila-tipos:empty {
+    display: none;
+}
+
+.archivo-fila-tipo {
+    display: inline-block;
+    font-family: var(--sans);
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding: 0.2rem 0.6rem;
+    border-radius: 3px;
+    white-space: nowrap;
+    opacity: 1;
+}
+
+/* Pastillas de tipo en el sitio: obra ocre, taller azul, ciclo/evento violeta */
+.archivo-fila-tipo--obras    { background: rgba(var(--color-obras-rgb), 0.2);     color: var(--color-obras); }
+.archivo-fila-tipo--talleres { background: rgba(var(--color-talleres-rgb), 0.2); color: var(--color-talleres); }
+.archivo-fila-tipo--ciclos   { background: rgba(var(--color-ciclos-rgb), 0.2);   color: var(--color-ciclos); }
+.archivo-fila-tipo--eventos  { background: rgba(var(--color-ciclos-rgb), 0.2);   color: var(--color-ciclos); }
+
+.archivo-fila-arrow {
+    grid-column: 3;
+    justify-self: end;
+    font-size: 1.125rem;
+    color: var(--texto-tenue);
+    opacity: 0.5;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+@media (max-width: 767px) {
+    .archivo-fila {
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 0.5rem 0.75rem;
+        padding-block: 0.6rem;
+    }
+
+    .archivo-fila-arrow {
+        display: none;
+    }
+
+    .archivo-fila-tipo {
+        font-size: 0.75rem;
+        padding: 0.15rem 0.5rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .archivo-fila {
+        padding-block: 0.55rem;
+    }
+}

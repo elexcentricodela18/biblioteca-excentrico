@@ -1,0 +1,211 @@
+/* ═══════════════════════════════════════════════
+   Valentina Fernández De Rosa — celebración
+   ═══════════════════════════════════════════════ */
+
+@import url('components/media-slideshow.css');
+@import url('components/content-dialog.css');
+
+.media-gallery .media-gallery__row--stack > .media-gallery__item--cuadrada {
+  max-width: none;
+  width: 100%;
+}
+
+.valentina-page {
+  width: 100%;
+  padding-bottom: 4rem;
+}
+
+.valentina-titulo-pagina {
+  color: var(--color-valentina);
+}
+
+.valentina-seccion + .valentina-seccion {
+  padding-top: 0;
+}
+
+/* Bio bajo el hero — dos columnas en el ancho central (mismo band que Equipo) */
+.valentina-intro {
+  width: 100%;
+  padding-block: 24px 48px;
+}
+
+.valentina-intro .intro-relato-grid {
+  row-gap: var(--block-gap);
+}
+
+.valentina-intro__col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--paragraph-gap);
+}
+
+.valentina-intro__col p {
+  margin: 0;
+}
+
+.valentina-intro__col em {
+  font-family: var(--serif-it);
+  font-style: italic;
+}
+
+/* Card destacada — video + cita */
+.valentina-alumnos-destacado {
+  width: 100%;
+}
+
+.alumno-card {
+  background: var(--white);
+}
+
+.alumno-card--destacada {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--grid-gutter);
+  align-items: start;
+}
+
+.alumno-card--destacada .video-block__embed,
+.alumno-card--destacada .video-block__placeholder {
+  aspect-ratio: 4 / 3;
+}
+
+.alumno-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-height: 100%;
+}
+
+.alumno-card__cita {
+  margin: 0;
+  font-family: var(--serif-it);
+  font-size: clamp(1.125rem, 2.5vw, 24px);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--grey-60);
+}
+
+.alumno-card__cita p {
+  margin: 0;
+}
+
+.alumno-card__cita p + p {
+  margin-top: var(--paragraph-gap);
+}
+
+.alumno-card__cita em {
+  font-family: var(--serif-it);
+  font-style: italic;
+}
+
+.alumno-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: auto;
+}
+
+.alumno-card__avatar {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--grey-20);
+}
+
+.alumno-card__identidad {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.alumno-card__nombre {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 1.125rem;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--texto);
+}
+
+.alumno-card__periodo {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  color: var(--texto-tenue);
+}
+
+/* Grid 2×2 de cards compactas */
+.valentina-alumnos-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--grid-gutter);
+}
+
+.alumno-card--compacta {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  border: 1px solid var(--grey-20);
+  min-height: 100%;
+}
+
+.alumno-card--compacta .alumno-card__cita {
+  flex: 1;
+  font-size: 1.125rem;
+}
+
+.alumno-card__ver {
+  align-self: flex-start;
+  margin-top: auto;
+}
+
+/* Frase de cierre */
+.valentina-cierre {
+  width: 100%;
+  padding-block: 3rem 1rem;
+}
+
+.valentina-cierre__frase {
+  margin: 0;
+  font-family: var(--serif-it);
+  font-size: clamp(1.25rem, 3vw, 28px);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--grey-60);
+}
+
+@media (min-width: 1280px) {
+  .valentina-cierre__frase {
+    grid-column: 3 / 11;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .valentina-cierre__frase {
+    grid-column: 2 / 12;
+  }
+}
+
+.valentina-page .content-dialog__titulo {
+  color: var(--color-valentina);
+}
+
+.valentina-page .content-dialog--video .content-dialog__titulo {
+  color: var(--grey-0);
+}
+
+@media (max-width: 767px) {
+  .alumno-card--destacada {
+    grid-template-columns: 1fr;
+  }
+
+  .valentina-alumnos-grid {
+    grid-template-columns: 1fr;
+  }
+}

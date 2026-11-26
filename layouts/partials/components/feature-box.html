@@ -1,0 +1,58 @@
+{{/*
+  Feature box — tarjeta cuadrada reutilizable
+  Parámetros:
+    label           (string) — etiqueta superior (small caps)
+    title / titulo  (string) — título
+    body / extracto (string) — texto descriptivo
+    texto           (string) — texto completo; si hay, «leer» abre el diálogo.
+                               Cada renglón es un párrafo; dos o más renglones
+                               en blanco seguidos suman un espacio extra (firma).
+    dialogo_titulo  (string) — título del diálogo (default: title)
+    href            (string) — enlace del botón "leer" (si no hay texto)
+    btnLabel        (string) — texto del botón (default: "leer")
+    class           (string) — clases extra opcionales en el <article>
+*/}}
+{{ $title := .title | default .titulo }}
+{{ $body := .body | default .extracto }}
+{{ $texto := .texto }}
+{{ $dialogoTitulo := .dialogo_titulo | default $title }}
+{{ $id := printf "feature-texto-%s" ($title | default .label | anchorize) }}
+<article class="feature-box{{ with .class }} {{ . }}{{ end }}">
+  <p class="feature-box__label">{{ .label }}</p>
+  <h3 class="feature-box__title">{{ $title }}</h3>
+  {{ with $body }}
+  <p class="feature-box__body">{{ partial "helpers/versalitas.html" . }}</p>
+  {{ end }}
+  {{ if $texto }}
+  <button
+    type="button"
+    class="btn-nav btn-nav--dark"
+    data-dialog-open
+    data-dialog-tipo="html"
+    data-dialog-source="{{ $id }}"
+    data-dialog-titulo="{{ $dialogoTitulo }}">
+    <span class="btn-nav__label">{{ .btnLabel | default "leer" }}</span>
+    <span class="btn-nav__arrow btn-nav__arrow--next" aria-hidden="true">⭢</span>
+  </button>
+  <div id="{{ $id }}" hidden>
+    {{ $raw := replace $texto "\r\n" "\n" }}
+    {{ $blancos := 0 }}
+    {{ range split $raw "\n" }}
+      {{ $line := trim . " \t" }}
+      {{ if $line }}
+        <p{{ if ge $blancos 2 }} class="parrafo-apartado"{{ end }}>{{ partial "helpers/versalitas.html" $line }}</p>
+        {{ $blancos = 0 }}
+      {{ else }}
+        {{ $blancos = add $blancos 1 }}
+      {{ end }}
+    {{ end }}
+  </div>
+  {{ else }}
+  {{ partial "components/btn-nav.html" (dict
+    "label"   (.btnLabel | default "leer")
+    "href"    .href
+    "variant" "dark"
+    "arrow"   "next"
+  ) }}
+  {{ end }}
+</article>

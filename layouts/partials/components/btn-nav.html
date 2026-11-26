@@ -1,0 +1,38 @@
+{{/*
+  Botón navegación prev/next — reutilizable
+  Parámetros:
+    label   (string)  — texto del botón (default: "leer")
+    href    (string)  — si existe, renderiza <a>; si no, <button>
+    variant (string)  — "dark" | "light" (default: "dark")
+    arrow   (string)  — "next" | "prev" | "both" | "none" (default: "next")
+    type    (string)  — type del <button> (default: "button")
+    class   (string)  — clases extra opcionales
+*/}}
+{{ $label := .label | default "leer" }}
+{{ $variant := .variant | default "dark" }}
+{{ $arrow := .arrow | default "next" }}
+{{ $href := .href }}
+{{ $extraClass := .class | default "" }}
+{{ $btnClass := printf "btn-nav btn-nav--%s%s" $variant (cond $extraClass (printf " %s" $extraClass) "") }}
+
+{{ if $href }}
+<a href="{{ $href }}" class="{{ $btnClass }}">
+  {{ if or (eq $arrow "prev") (eq $arrow "both") }}
+  <span class="btn-nav__arrow btn-nav__arrow--prev" aria-hidden="true">⭠</span>
+  {{ end }}
+  <span class="btn-nav__label">{{ $label }}</span>
+  {{ if or (eq $arrow "next") (eq $arrow "both") }}
+  <span class="btn-nav__arrow btn-nav__arrow--next" aria-hidden="true">⭢</span>
+  {{ end }}
+</a>
+{{ else }}
+<button type="{{ .type | default "button" }}" class="{{ $btnClass }}">
+  {{ if or (eq $arrow "prev") (eq $arrow "both") }}
+  <span class="btn-nav__arrow btn-nav__arrow--prev" aria-hidden="true">⭠</span>
+  {{ end }}
+  <span class="btn-nav__label">{{ $label }}</span>
+  {{ if or (eq $arrow "next") (eq $arrow "both") }}
+  <span class="btn-nav__arrow btn-nav__arrow--next" aria-hidden="true">⭢</span>
+  {{ end }}
+</button>
+{{ end }}

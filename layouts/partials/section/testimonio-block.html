@@ -1,0 +1,116 @@
+{{/*
+  Bloque de testimonio — nombre, video opcional, texto (sin bajada)
+  Parámetros:
+    page — ficha hija Hugo
+*/}}
+{{ $page := .page }}
+{{ $p := $page.Params }}
+{{ $id := printf "testimonio-%s" ($page.Title | anchorize) }}
+
+{{ $redesVisibles := partial "helpers/redes-visibles.html" ($p.redes | default slice) }}
+{{ $hasTexto := or $p.bloques $p.lead $p.texto $p.intro $redesVisibles }}
+{{ $hasMedia := or $p.audios $p.video }}
+{{ $hasCuerpo := or $hasMedia $hasTexto }}
+
+{{ $portrait := false }}
+{{ with $p.video }}
+  {{ $fmt := .formato | default .orientacion | default "" | lower }}
+  {{ $portrait = or (eq $fmt "vertical") (eq $fmt "portrait") }}
+{{ end }}
+
+<section class="grupo-section" id="{{ $id }}" data-grupo-nav>
+  <div class="grid-container">
+    <div class="grid grupo-header-grid">
+      <h2 class="grupo-titulo grupo-titulo--testimonios site-col-from-2 site-col-to-end">{{ $page.Title }}</h2>
+    </div>
+  </div>
+
+  {{ if $hasCuerpo }}
+  <section class="grupo-cuerpo intro-relato grupo-cuerpo--testimonio">
+    <div class="grid-container">
+      <div class="grid intro-relato-grid{{ if $portrait }} intro-relato-grid--testimonio-portrait{{ end }}">
+
+        {{ with $p.video }}
+        <div class="section-media-wrap{{ if $portrait }} section-media-wrap--portrait{{ else }} intro-relato-ancho{{ end }}">
+          {{ partial "components/video-block.html" (merge . (dict "class" "video-block--native")) }}
+        </div>
+        {{ end }}
+
+        {{ with $p.audios }}
+        <div class="section-audios-wrap intro-relato-ancho">
+          {{ range . }}
+          {{ partial "components/audio-bar.html" . }}
+          {{ end }}
+        </div>
+        {{ end }}
+
+        {{ if $p.bloques }}
+        {{ $izq := slice }}
+        {{ $der := slice }}
+        {{ $ancho := slice }}
+        {{ $debajo := slice }}
+        {{ range $i, $b := $p.bloques }}
+          {{ $col := $b.columna | default "" }}
+          {{ $tipo := $b.tipo | default "" }}
+          {{ if or (eq $col "debajo") (eq $tipo "debajo") }}
+            {{ $debajo = $debajo | append $b }}
+          {{ else if or (eq $col "ancho") (eq $tipo "ancho") }}
+            {{ $ancho = $ancho | append $b }}
+          {{ else if or (eq $col "izq") (eq $col 1) }}
+            {{ $izq = $izq | append $b }}
+          {{ else if or (eq $col "der") (eq $col 2) }}
+            {{ $der = $der | append $b }}
+          {{ else if eq $i 0 }}
+            {{ $izq = $izq | append $b }}
+          {{ else }}
+            {{ $der = $der | append $b }}
+          {{ end }}
+        {{ end }}
+        {{ $tieneDebajoCols := or $izq $der }}
+        {{ $tieneDebajo := or $tieneDebajoCols $debajo }}
+        {{ $soloAncho := and $ancho (not $tieneDebajo) }}
+        {{ if $ancho }}
+        <div class="testimonio-texto intro-relato-ancho{{ if or $soloAncho $tieneDebajo }} testimonio-texto--ancho{{ end }}">
+          <div class="testimonio-texto__ancho">
+            {{ range $ancho }}{{ partial "section/texto-bloque.html" . }}{{ end }}
+          </div>
+        </div>
+        {{ end }}
+        {{ if $debajo }}
+        <div class="testimonio-texto intro-relato-ancho testimonio-texto--debajo testimonio-texto--ancho">
+          <div class="testimonio-texto__ancho">
+            {{ range $debajo }}{{ partial "section/texto-bloque.html" . }}{{ end }}
+          </div>
+        </div>
+        {{ end }}
+        {{ if $tieneDebajoCols }}
+        <div class="testimonio-texto intro-relato-ancho{{ if $ancho }} testimonio-texto--debajo{{ end }}">
+          {{ if $izq }}
+          <div class="testimonio-texto__col">
+            {{ range $izq }}{{ partial "section/texto-bloque.html" . }}{{ end }}
+          </div>
+          {{ end }}
+          {{ if $der }}
+          <div class="testimonio-texto__col">
+            {{ range $der }}{{ partial "section/texto-bloque.html" . }}{{ end }}
+          </div>
+          {{ end }}
+        </div>
+        {{ end }}
+        {{ else if or $p.lead $p.texto $p.intro }}
+        <div class="testimonio-texto intro-relato-ancho">
+          {{ partial "section/texto-bloques.html" (dict "lead" $p.lead "intro" $p.intro "texto" $p.texto) }}
+        </div>
+        {{ end }}
+
+        {{ with $redesVisibles }}
+        <div class="testimonio-redes-wrap intro-relato-col">
+          {{ partial "components/redes-sociales.html" (dict "items" . "persona" $page.Title) }}
+        </div>
+        {{ end }}
+
+      </div>
+    </div>
+  </section>
+  {{ end }}
+</section>

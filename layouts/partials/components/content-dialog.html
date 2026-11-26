@@ -1,0 +1,14 @@
+{{/*
+  Diálogo reutilizable para contenido ampliado (audio, video, texto)
+*/}}
+<dialog class="content-dialog{{ with .class }} {{ . }}{{ end }}" id="content-dialog" aria-labelledby="content-dialog-title">
+  <button type="button" class="content-dialog__close" data-dialog-close aria-label="Cerrar">
+    <span class="ham-linea" aria-hidden="true"></span>
+    <span class="ham-linea" aria-hidden="true"></span>
+    <span class="ham-linea" aria-hidden="true"></span>
+  </button>
+  <div class="content-dialog__panel">
+    <h2 class="content-dialog__titulo" id="content-dialog-title"></h2>
+    <div class="content-dialog__body" data-dialog-body></div>
+  </div>
+</dialog>

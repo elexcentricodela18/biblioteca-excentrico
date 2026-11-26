@@ -1,0 +1,75 @@
+/* ═══════════════════════════════════════════════
+   Filters — botones de filtro reutilizables (Figma)
+   Default · Hover · Pressed · Active
+   ═══════════════════════════════════════════════ */
+
+.filtro-btn {
+    box-sizing: border-box;
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px 16px;
+    gap: 10px;
+    margin: 0;
+    min-height: 37px;
+    height: 37px;
+    /* Tabs usan --grey-40 en esquinas vivas; en pastillas el antialias aclara el filete,
+       así que --grey-50 iguala la lectura visual al borde de los tabs. */
+    border: 1px solid var(--grey-50);
+    border-radius: 50px;
+    background: var(--white);
+    font-family: var(--serif);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 21px;
+    font-feature-settings: 'pnum' on, 'onum' on;
+    color: var(--grey-60);
+    cursor: pointer;
+    flex: none;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.filtro-btn:hover {
+    background: #ededed;
+    color: var(--grey-100);
+    border-color: var(--grey-50);
+}
+
+.filtro-btn:active {
+    background: #ededed;
+    border-color: var(--grey-100);
+    color: var(--grey-100);
+}
+
+.filtro-btn.activo {
+    background: var(--grey-100);
+    border-color: var(--grey-100);
+    color: var(--grey-0);
+}
+
+.filtro-btn.activo:hover {
+    background: var(--grey-100);
+    border-color: var(--grey-100);
+    color: var(--grey-0);
+}
+
+.filtro-btn:focus {
+    outline: none;
+}
+
+.filtro-btn:focus-visible {
+    outline: 2px solid var(--grey-70);
+    outline-offset: 2px;
+}
+
+.filtros-barra {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+}

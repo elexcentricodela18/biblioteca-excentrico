@@ -1,0 +1,23 @@
+{{- /* Aplana string / slice a texto de búsqueda. Omite mapas, placeholders y URLs. */ -}}
+{{- if reflect.IsSlice . -}}
+  {{- range $i, $v := . -}}
+    {{- if $i }} {{ end -}}
+    {{- partial "helpers/archivo-busqueda-flatten.html" $v -}}
+  {{- end -}}
+{{- else if not (reflect.IsMap .) -}}
+  {{- $s := strings.TrimSpace (printf "%v" .) -}}
+  {{- $n := lower $s -}}
+  {{- $skip := or
+    (eq $n "")
+    (eq $n "dirección")
+    (eq $n "direccion")
+    (eq $n "director")
+    (eq $n "autor")
+    (eq $n "docente")
+    (eq $n "elenco")
+    (eq $n "nombre apellido1, nombre apellido2")
+    (hasPrefix $n "http://")
+    (hasPrefix $n "https://")
+  -}}
+  {{- if not $skip -}}{{ $n }}{{- end -}}
+{{- end -}}

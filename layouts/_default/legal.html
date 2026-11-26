@@ -1,0 +1,14 @@
+{{ define "main" }}
+<div class="section-page legal-page">
+  <div class="grid-container">
+    <div class="grid section-header-grid">
+      <h1 class="section-titulo-pagina legal-page__titulo site-col-from-2 site-col-to-end">{{ partial "helpers/titulo-seccion.html" .Title }}</h1>
+    </div>
+    <div class="grid intro-relato-grid">
+      <div class="legal-prose intro-relato-ancho">
+        {{ .Content }}
+      </div>
+    </div>
+  </div>
+</div>
+{{ end }}

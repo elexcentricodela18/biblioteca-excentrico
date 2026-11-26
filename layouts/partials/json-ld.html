@@ -1,0 +1,74 @@
+{{- /* Datos estructurados schema.org (JSON-LD) */ -}}
+{{- $orgName := "El Excéntrico de la 18" -}}
+{{- $siteURL := .Site.BaseURL -}}
+{{- $logo := (.Site.Params.og_image | default "/img/og/portada.jpg") | absURL -}}
+{{- $orgID := printf "%s#organization" $siteURL -}}
+{{- $siteID := printf "%s#website" $siteURL -}}
+
+{{- $organization := dict
+  "@type" "Organization"
+  "@id" $orgID
+  "name" $orgName
+  "url" $siteURL
+  "logo" (dict "@type" "ImageObject" "url" $logo)
+  "address" (dict "@type" "PostalAddress" "addressLocality" "Buenos Aires" "addressCountry" "AR")
+-}}
+
+{{- $website := dict
+  "@type" "WebSite"
+  "@id" $siteID
+  "name" .Site.Title
+  "url" $siteURL
+  "description" .Site.Params.descripcion
+  "inLanguage" .Site.LanguageCode
+  "publisher" (dict "@id" $orgID)
+-}}
+
+{{- $graph := slice $organization $website -}}
+
+{{- if and .IsPage (eq .Section "obras") -}}
+  {{- $anio := .Params.anio | default .Date.Year -}}
+  {{- $lugar := $orgName -}}
+  {{- $ciudad := "Buenos Aires" -}}
+  {{- $placeholder := "Aquí se puede escribir una breve sinopsis" -}}
+  {{- $plain := .Summary | plainify | strings.TrimSpace -}}
+  {{- $desc := "" -}}
+  {{- if and $plain (not (strings.Contains $plain $placeholder)) -}}
+    {{- $desc = $plain | truncate 160 -}}
+  {{- else -}}
+    {{- $desc = printf "%s (%v) — obra en la biblioteca de %s, %s." .Title $anio $orgName $ciudad -}}
+  {{- end -}}
+
+  {{- $event := dict
+    "@type" "TheaterEvent"
+    "@id" (printf "%s#event" .Permalink)
+    "name" .Title
+    "url" .Permalink
+    "description" $desc
+    "startDate" (printf "%v" $anio)
+    "eventStatus" "https://schema.org/EventScheduled"
+    "eventAttendanceMode" "https://schema.org/OfflineEventAttendanceMode"
+    "location" (dict
+      "@type" "PerformingArtsTheater"
+      "name" $lugar
+      "address" (dict "@type" "PostalAddress" "addressLocality" $ciudad "addressCountry" "AR")
+    )
+    "organizer" (dict "@id" $orgID)
+  -}}
+
+  {{- with .Params.direccion -}}
+    {{- if and . (ne . "Dirección") (ne . "Autor") -}}
+      {{- $event = merge $event (dict "director" (dict "@type" "Person" "name" .)) -}}
+    {{- end -}}
+  {{- end -}}
+  {{- with .Params.autor -}}
+    {{- if and . (ne . "Autor") (ne . "Dirección") -}}
+      {{- $event = merge $event (dict "author" (dict "@type" "Person" "name" .)) -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- $graph = $graph | append $event -}}
+{{- end -}}
+
+{{- $ld := dict "@context" "https://schema.org" "@graph" $graph -}}
+<script type="application/ld+json">{{ $ld | jsonify | safeJS }}</script>

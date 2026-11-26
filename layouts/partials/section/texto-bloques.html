@@ -1,0 +1,21 @@
+{{/*
+  Renderiza bloques de texto: array `bloques` o legacy lead/intro/texto
+  Parámetro: dict con bloques, lead, intro, texto (legacy)
+*/}}
+{{ $bloques := .bloques }}
+{{ if not $bloques }}
+  {{ $colDer := .intro | default .texto }}
+  {{ if and .lead $colDer }}
+    {{ $bloques = slice (dict "tipo" "lead-col" "lead" .lead "texto" $colDer) }}
+  {{ else if .lead }}
+    {{ $bloques = slice (dict "tipo" "lead" "lead" .lead) }}
+  {{ else if $colDer }}
+    {{ $bloques = slice (dict "tipo" "texto" "texto" $colDer) }}
+  {{ else if .detalles }}
+    {{ $bloques = slice (dict "tipo" "texto" "texto" .detalles) }}
+  {{ end }}
+{{ end }}
+
+{{ range $bloques }}
+{{ partial "section/texto-bloque.html" . }}
+{{ end }}

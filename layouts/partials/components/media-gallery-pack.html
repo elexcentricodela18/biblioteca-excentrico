@@ -1,0 +1,136 @@
+{{/*
+  Empaqueta ítems en filas editoriales y se llama a sí mismo con el resto.
+  Filas: stack | double | triple | pair | papin | bento
+  Dos pair seguidas con el mismo lado se invierten (ladrillo V|A / A|V).
+  modulo: 2x2 → bento (foto grande 2×2 + dos chicas al lado); lados se alternan.
+*/}}
+{{ $items := .items }}
+{{ $n := len $items }}
+{{ if eq $n 0 }}{{ return }}{{ end }}
+{{ $prevRow := .prevRow | default "" }}
+{{ $prevLead := .prevLead | default "" }}
+{{ $prevBento := .prevBento | default "" }}
+
+{{ $allSame := true }}
+{{ $oFirst := "" }}
+{{ range $items }}
+  {{ $o := partial "components/media-gallery-orient.html" . }}
+  {{ if eq $oFirst "" }}{{ $oFirst = $o }}{{ end }}
+  {{ if ne $o $oFirst }}{{ $allSame = false }}{{ end }}
+{{ end }}
+
+{{ $take := 1 }}
+{{ $row := "stack" }}
+{{ $lead := "" }}
+{{ $flip := false }}
+{{ $destacada := false }}
+{{ $modulo := "" }}
+{{ with index $items 0 }}
+  {{ if .destacada }}{{ $destacada = true }}{{ end }}
+  {{ with .modulo }}{{ $modulo = . }}{{ end }}
+{{ end }}
+
+{{ if and (eq $modulo "2x2") (ge $n 3) }}
+  {{ $take = 3 }}{{ $row = "bento" }}
+  {{ if eq $prevBento "start" }}
+    {{ $lead = "end" }}
+  {{ else }}
+    {{ $lead = "start" }}
+  {{ end }}
+{{ else if $destacada }}
+  {{ $take = 1 }}{{ $row = "stack" }}
+{{ else if $allSame }}
+  {{ if eq $n 1 }}
+    {{ $take = 1 }}{{ $row = "stack" }}
+  {{ else if or (eq $n 2) (eq $n 4) }}
+    {{ $take = 2 }}{{ $row = "double" }}
+  {{ else }}
+    {{ $take = 3 }}{{ $row = "triple" }}
+  {{ end }}
+{{ else }}
+  {{ $o0 := partial "components/media-gallery-orient.html" (index $items 0) }}
+  {{ $o1 := "" }}
+  {{ $o2 := "" }}
+  {{ if ge $n 2 }}{{ $o1 = partial "components/media-gallery-orient.html" (index $items 1) }}{{ end }}
+  {{ if ge $n 3 }}{{ $o2 = partial "components/media-gallery-orient.html" (index $items 2) }}{{ end }}
+
+  {{ $land0 := eq $o0 "apaisada" }}
+  {{ $land1 := eq $o1 "apaisada" }}
+
+  {{ $papin := false }}
+  {{ if eq $n 3 }}
+    {{ $p := 0 }}{{ $l := 0 }}
+    {{ range $items }}
+      {{ $o := partial "components/media-gallery-orient.html" . }}
+      {{ if eq $o "vertical" }}{{ $p = add $p 1 }}{{ end }}
+      {{ if eq $o "apaisada" }}{{ $l = add $l 1 }}{{ end }}
+    {{ end }}
+    {{ if and (eq $p 2) (eq $l 1) }}{{ $papin = true }}{{ end }}
+  {{ end }}
+
+  {{ if eq $o0 "cuadrada" }}
+    {{ $take = 1 }}{{ $row = "stack" }}
+  {{ else if $papin }}
+    {{ $take = 3 }}{{ $row = "papin" }}
+  {{ else if and (ge $n 3) (eq $o0 $o1) (eq $o1 $o2) }}
+    {{/* 4+ iguales antes de un cambio → 2+2 (no 3+1); p. ej. Valentina 21–24 + apaisada */}}
+    {{ $o3 := "" }}
+    {{ if ge $n 4 }}{{ $o3 = partial "components/media-gallery-orient.html" (index $items 3) }}{{ end }}
+    {{ if and (ge $n 4) (eq $o3 $o0) }}
+      {{ $take = 2 }}{{ $row = "double" }}
+    {{ else }}
+      {{ $take = 3 }}{{ $row = "triple" }}
+    {{ end }}
+  {{ else if and (ge $n 2) (ne $land0 $land1) }}
+    {{ $take = 2 }}{{ $row = "pair" }}
+    {{ if $land0 }}{{ $lead = "apaisada" }}{{ else }}{{ $lead = "vertical" }}{{ end }}
+    {{ if and (eq $prevRow "pair") (eq $prevLead $lead) }}{{ $flip = true }}{{ end }}
+  {{ else if and (ge $n 2) (eq $o0 $o1) }}
+    {{ $take = 2 }}{{ $row = "double" }}
+  {{ else }}
+    {{ $take = 1 }}{{ $row = "stack" }}
+  {{ end }}
+{{ end }}
+
+{{/* destacada no comparte fila: si el 2º o 3º del take lo es, se corta antes */}}
+{{ if ge $take 3 }}
+  {{ $item2 := index $items 2 }}
+  {{ if $item2.destacada }}
+    {{ $take = 2 }}
+    {{ $oA := partial "components/media-gallery-orient.html" (index $items 0) }}
+    {{ $oB := partial "components/media-gallery-orient.html" (index $items 1) }}
+    {{ if eq $oA $oB }}
+      {{ $row = "double" }}
+      {{ $lead = "" }}
+    {{ else }}
+      {{ $row = "pair" }}
+      {{ $landA := eq $oA "apaisada" }}
+      {{ if $landA }}{{ $lead = "apaisada" }}{{ else }}{{ $lead = "vertical" }}{{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ if ge $take 2 }}
+  {{ $item1 := index $items 1 }}
+  {{ if $item1.destacada }}
+    {{ $take = 1 }}{{ $row = "stack" }}{{ $lead = "" }}
+  {{ end }}
+{{ end }}
+
+{{ $rowItems := first $take $items }}
+{{ $rest := after $take $items }}
+{{ if $flip }}
+  {{ $rowItems = slice (index $rowItems 1) (index $rowItems 0) }}
+  {{ if eq $lead "vertical" }}{{ $lead = "apaisada" }}{{ else }}{{ $lead = "vertical" }}{{ end }}
+{{ end }}
+
+<div class="media-gallery__row media-gallery__row--{{ $row }}" data-row="{{ $row }}"{{ if $lead }} data-lead="{{ $lead }}"{{ end }}>
+  {{ range $rowItems }}
+    {{ partial "components/media-gallery-item.html" . }}
+  {{ end }}
+</div>
+
+{{ $nextBento := $prevBento }}
+{{ if eq $row "bento" }}{{ $nextBento = $lead }}{{ end }}
+{{ if gt (len $rest) 0 }}
+  {{ partial "components/media-gallery-pack.html" (dict "items" $rest "prevRow" $row "prevLead" $lead "prevBento" $nextBento) }}
+{{ end }}

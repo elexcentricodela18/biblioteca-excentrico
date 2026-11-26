@@ -1,0 +1,13 @@
+{{/*
+  Texto de ficha de persona: un párrafo por línea en blanco;
+  <em>título</em> se renderiza en itálica; «» se muestran como comillas.
+  Recibe: string
+*/}}
+{{ $raw := . | default "" }}
+{{ $raw = replace $raw "\r\n" "\n" }}
+{{ range split $raw "\n" }}
+  {{ $line := trim . " \t" }}
+  {{ if $line }}
+    <p class="intro-relato-col">{{ partial "helpers/versalitas.html" $line }}</p>
+  {{ end }}
+{{ end }}

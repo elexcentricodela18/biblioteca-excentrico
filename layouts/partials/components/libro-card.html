@@ -1,0 +1,100 @@
+{{/*
+  Tapa de libro — lightbox en todas las tapas; PDF solo como enlace «Ver PDF».
+  { titulo, subtitulo, autores, datos, tapa, pdf, apaisada, ediciones[] }
+  ediciones[]: { tapa, dato, pdf } — dos tapas; título/autor se comparten; PDF solo en la edición que lo tiene.
+*/}}
+{{ $titulo := .titulo | default "Libro" }}
+{{ $items := .ediciones }}
+{{ if not $items }}
+  {{ if not .tapa }}{{ return }}{{ end }}
+  {{ $items = slice (dict "tapa" .tapa "pdf" .pdf) }}
+{{ end }}
+{{ $varias := gt (len $items) 1 }}
+
+<figure class="libro-card{{ if .apaisada }} libro-card--apaisada{{ end }}{{ if $varias }} libro-card--ediciones{{ end }}">
+  {{ if $varias }}<div class="libro-card__ediciones">{{ end }}
+  {{ range $items }}
+    {{ $tapa := .tapa }}
+    {{ if not $tapa }}{{ continue }}{{ end }}
+    {{ $leyenda := $titulo }}
+    {{ with .dato }}{{ $leyenda = printf "%s. %s" $titulo . }}{{ end }}
+
+    {{ if $varias }}<div class="libro-card__edicion">{{ end }}
+    <button
+      type="button"
+      class="libro-card__media"
+      data-lightbox-open
+      data-lightbox-src="{{ $tapa | relURL }}"
+      data-lightbox-caption="{{ $leyenda | htmlEscape }}"
+      aria-label="Ampliar tapa de {{ $leyenda }}">
+      <img
+        src="{{ $tapa | relURL }}"
+        alt="Tapa de {{ $leyenda }}"
+        loading="lazy"
+        decoding="async">
+    </button>
+    {{ if $varias }}</div>{{ end }}
+  {{ end }}
+  {{ if $varias }}</div>{{ end }}
+
+  <figcaption class="libro-card__caption{{ if $varias }} libro-card__caption--ediciones{{ end }}">
+    {{ if $varias }}
+      {{ range $i, $ed := $items }}
+      <div class="libro-card__edicion-dato">
+        {{ if eq $i 0 }}
+        <span class="libro-card__titulo">{{ partial "helpers/versalitas.html" $titulo }}</span>
+        {{ with $.subtitulo }}
+        <span class="libro-card__sub">{{ partial "helpers/versalitas.html" . }}</span>
+        {{ end }}
+        {{ with $.autores }}
+        <span class="libro-card__autores versalita">{{ . }}</span>
+        {{ end }}
+        {{ range $.datos }}
+        <span class="libro-card__dato">{{ partial "helpers/versalitas.html" . }}</span>
+        {{ end }}
+        {{ end }}
+        {{ with $ed.dato }}
+        <span class="libro-card__dato">{{ partial "helpers/versalitas.html" . }}</span>
+        {{ end }}
+        {{ with $ed.pdf }}
+        {{ $pdfHref := . }}
+        {{ if not (or (hasPrefix . "http://") (hasPrefix . "https://")) }}
+          {{ $pdfHref = . | relURL }}
+        {{ end }}
+        <a
+          class="libro-card__formato"
+          href="{{ $pdfHref }}"
+          target="_blank"
+          rel="noopener noreferrer">
+          <span class="versalita">Ver PDF</span>
+        </a>
+        {{ end }}
+      </div>
+      {{ end }}
+    {{ else }}
+    <span class="libro-card__titulo">{{ partial "helpers/versalitas.html" $titulo }}</span>
+    {{ with .subtitulo }}
+    <span class="libro-card__sub">{{ partial "helpers/versalitas.html" . }}</span>
+    {{ end }}
+    {{ with .autores }}
+    <span class="libro-card__autores versalita">{{ . }}</span>
+    {{ end }}
+    {{ range .datos }}
+    <span class="libro-card__dato">{{ partial "helpers/versalitas.html" . }}</span>
+    {{ end }}
+    {{ if .pdf }}
+    {{ $pdfHref := .pdf }}
+    {{ if not (or (hasPrefix .pdf "http://") (hasPrefix .pdf "https://")) }}
+      {{ $pdfHref = .pdf | relURL }}
+    {{ end }}
+    <a
+      class="libro-card__formato"
+      href="{{ $pdfHref }}"
+      target="_blank"
+      rel="noopener noreferrer">
+      <span class="versalita">Ver PDF</span>
+    </a>
+    {{ end }}
+    {{ end }}
+  </figcaption>
+</figure>

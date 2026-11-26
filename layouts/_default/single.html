@@ -1,0 +1,54 @@
+{{ define "main" }}
+<div class="container">
+
+  {{/* 2. Cabecera con Sangría Francesa */}}
+  <section class="bloque-anual-ficha">
+    
+    {{/* Año en el margen izquierdo */}}
+    <div class="columna-anio-ficha">
+      <span class="anio-ficha-texto">{{ .Params.anio }}</span>
+    </div>
+
+    {{/* Título + Ficha Técnica */}}
+    <div class="bloque-contenido-ficha">
+      <h1 class="obra-titulo-principal">{{ .Title }}</h1>
+
+      {{ partial "components/obra-ficha-creditos.html" . }}
+    </div>
+  </section>
+
+  {{/* 3. Contenido / Sinopsis (Conservado) */}}
+  {{ if .Content }}
+    <div class="obra-texto">
+      {{ .Content }}
+    </div>
+  {{ end }}
+
+  {{/* 4. Video (Conservado) */}}
+  {{ with .Params.video_url }}
+    <div class="media-video">
+      <iframe src="{{ . }}" frameborder="0" allowfullscreen loading="lazy"></iframe>
+    </div>
+  {{ end }}
+
+  {{/* 5. Galería (Conservado) */}}
+  {{ with .Params.fotos }}
+    <div class="obra-galeria">
+      {{ range . }}
+        <img src="{{ . | relURL }}" alt="Foto de {{ $.Title }}" class="foto-ficha" loading="lazy">
+      {{ end }}
+    </div>
+  {{ end }}
+
+  {{/* 6. Navegación Prev/Next (Conservado) */}}
+  <nav class="obra-nav" style="margin-top: 3rem; display: flex; gap: 2rem; flex-wrap: wrap;">
+    {{ with .PrevInSection }}
+      <a href="{{ .Permalink }}" style="font-size: 0.9rem; text-decoration: underline;">← {{ .Title }}</a>
+    {{ end }}
+    {{ with .NextInSection }}
+      <a href="{{ .Permalink }}" style="font-size: 0.9rem; text-decoration: underline;">{{ .Title }} →</a>
+    {{ end }}
+  </nav>
+
+</div>
+{{ end }}

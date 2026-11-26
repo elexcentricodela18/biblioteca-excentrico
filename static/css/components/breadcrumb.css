@@ -1,0 +1,191 @@
+/* ═══════════════════════════════════════════════
+   breadcrumb — miga de pan reutilizable
+   WCAG: nav + ol, aria-current, focus visible, contraste
+   ═══════════════════════════════════════════════ */
+
+.breadcrumb {
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    color: var(--texto-tenue);
+}
+
+.breadcrumb__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.breadcrumb__item {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    min-width: 0;
+}
+
+.breadcrumb__item:not(:last-child)::after {
+    content: '/';
+    margin-inline: 0.35em;
+    color: var(--texto-tenue);
+    pointer-events: none;
+    user-select: none;
+}
+
+.breadcrumb__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-inline: 2px;
+    color: var(--texto-tenue);
+    font-weight: 400;
+    text-decoration: none;
+    transition:
+        color 0.15s ease,
+        font-weight 0.15s ease;
+}
+
+.breadcrumb__link:hover {
+    color: var(--grey-100);
+    font-weight: 500;
+}
+
+.breadcrumb__link:active {
+    color: var(--grey-100);
+    font-weight: 500;
+}
+
+.breadcrumb__link:focus {
+    outline: none;
+}
+
+.breadcrumb__link:focus-visible {
+    outline: 2px solid var(--grey-70);
+    outline-offset: 2px;
+    border-radius: 2px;
+    color: var(--grey-100);
+    font-weight: 500;
+}
+
+.breadcrumb__current {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-inline: 2px;
+    color: var(--texto);
+    font-weight: 400;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+@media (max-width: 767px) {
+    .breadcrumb__list {
+        row-gap: 4px;
+    }
+
+    .breadcrumb__current {
+        white-space: normal;
+        overflow: visible;
+        text-overflow: unset;
+        overflow-wrap: anywhere;
+    }
+
+    .breadcrumb__link {
+        min-height: 44px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .breadcrumb__link {
+        transition: none;
+    }
+}
+
+/* ── Header: miga integrada (reemplaza logo suelto) ── */
+.site-header .site-header__breadcrumb {
+    margin: 0;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    color: var(--texto-tenue);
+}
+
+.site-header .site-header__breadcrumb .breadcrumb__list {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.site-header .site-header__breadcrumb .breadcrumb__item {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+}
+
+.site-header .site-header__breadcrumb .breadcrumb__item:not(:last-child) {
+    flex: 0 1 auto;
+}
+
+.site-header .site-header__breadcrumb .breadcrumb__item:last-child {
+    flex: 1 1 0;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.site-header .site-header__breadcrumb .breadcrumb__link,
+.site-header .site-header__breadcrumb .breadcrumb__current {
+    min-height: auto;
+    padding-block: 2px;
+    line-height: 1.25;
+    min-width: 0;
+}
+
+.site-header .site-header__breadcrumb .breadcrumb__current--truncate {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Mobile: solo «Biblioteca del Excéntrico de la 18» → inicio */
+@media (max-width: 767px) {
+    .site-header .site-header__breadcrumb .breadcrumb__item:not(:first-child) {
+        display: none;
+    }
+
+    .site-header .site-header__breadcrumb .breadcrumb__item:first-child::after {
+        content: none;
+    }
+
+    .site-header .site-header__breadcrumb .breadcrumb__item:first-child {
+        flex: 1 1 auto;
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    .site-header .site-header__breadcrumb .breadcrumb__link {
+        display: block;
+        color: var(--texto);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        overflow-wrap: normal;
+        max-width: 100%;
+        font-size: 0.9375rem;
+        letter-spacing: 0.02em;
+    }
+}

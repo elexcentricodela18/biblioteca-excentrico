@@ -1,0 +1,155 @@
+/* --- 1. ESTRUCTURA Y SEPARACIÓN DEL HEADER --- */
+/*.container {
+    margin-top: 30px;
+    padding-top: 2rem; */
+}
+
+/* --- 2. FILTROS DINÁMICOS --- */
+.filtros-contenedor {
+    margin: 1rem 0 4rem 0;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    padding-top: 1.5rem;
+}
+
+.filtros-label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.filtros-barra {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.filtro-btn {
+    background: transparent;
+    border: 1px solid rgba(0,0,0,0.15);
+    padding: 12px 14px;
+    font-family: inherit;
+    font-weight: 400;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-transform: capitalize;
+    border-radius: 14px;
+}
+
+.filtro-count {
+    font-size: 0.8rem;
+    background: #f0f0f0;
+    padding: 2px 8px;
+    border-radius: 10px;
+    color: #000;
+}
+
+.filtro-btn:hover {
+    background: #000;
+    color: #fff;
+}
+
+.filtro-btn.activo {
+    background: #000;
+    color: #fff;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+}
+
+/* --- 3. GRUPOS POR AÑO (STICKY) 
+.anio-cabecera {
+    font-size: 4rem;
+    font-family: var(--serif);
+    color: var(--obras);
+    border-top: 20px solid #fff;
+    border-bottom: 20px solid #fff;
+    margin: 4rem 0 0.75rem 0;
+    padding-bottom: 0.5rem;
+    position: sticky;
+    top: 0rem;
+    background: #fff;
+    z-index: 10;
+} --- */
+
+/* --- 4. LAS FICHAS (SIN SUBRAYADOS) --- */
+.obra-link {
+    text-decoration: none !important; /* Quita el subrayado azul del navegador */
+    color: inherit;
+    display: block;
+}
+
+.lista-obras {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .lista-obras { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (min-width: 1024px) {
+    .lista-obras { grid-template-columns: repeat(4, 1fr); }
+}
+
+.obra-item {
+    border: 1px solid rgba(0,0,0,0.4);
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+    background: #fff;
+}
+
+.obra-item:hover {
+    border-color: #000;
+    background: var(--obras);
+}
+
+.obra-nombre {
+    font-size: 1.25rem;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+    text-decoration: none !important;
+}
+
+.obra-tipo-tag {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #000;
+    opacity: 0.75;
+}
+
+.obra-ver {
+    position: absolute;
+    right: 1.5rem;
+    bottom: 1rem;
+    font-size: 1.2rem;
+    opacity: 0.5;
+    transition: 0.3s ease;
+}
+
+.obra-item:hover .obra-ver {
+    opacity: 1;
+    transform: translateX(7px);
+}
+
+.obra-item:hover .obra-tipo-tag {
+    opacity: 1;
+    font-weight: 400;
+}
+
+.hero-subtitulo {
+  font-family: var(--serif-it);
+  font-size: 1.4rem;
+  color: var(--suave);
+  max-width: 520px;
+  line-height: 1.4;
+  font-style: italic;
+}

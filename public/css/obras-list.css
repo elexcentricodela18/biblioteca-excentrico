@@ -1,0 +1,90 @@
+/* ═══════════════════════════════════════════════
+   Obras — listado estilo Archivo (Historia)
+   ═══════════════════════════════════════════════ */
+
+@import url('components/archivo-list.css?v=2');
+
+.obras-page {
+  width: 100%;
+  padding-bottom: 4rem;
+}
+
+.section-titulo-pagina--obras {
+  color: var(--color-obras);
+}
+
+/* 24px título → intro (margin-bottom del título); intro → buscador vía padding del header */
+.obras-page .section-header-grid .section-titulo-pagina {
+  margin-bottom: 24px;
+}
+
+.obras-page .section-header-grid {
+  /* mismo hueco que buscador → tabs (slot 8+22 + margin 16 + gap 0.5rem) */
+  padding-bottom: calc(8px + 22px + 16px + 0.5rem);
+}
+
+.obras-page .obras-archivo {
+  border-top: none;
+  padding-top: 0;
+  padding-block: 0 3rem;
+  margin-top: 0;
+}
+
+.obras-page .archivo-controles {
+  position: relative;
+  z-index: auto;
+  padding-top: 0;
+  margin-bottom: 0;
+  background: var(--fondo);
+}
+
+.obras-page .archivo-buscar {
+  margin-bottom: 16px;
+}
+
+/* Scroll interno + años sticky (patrón Historia) */
+.obras-page .archivo-lista-scroll {
+  max-height: min(70vh, 680px);
+  overflow-y: auto;
+  margin-top: 0;
+}
+
+.obras-page .archivo-anio {
+  top: 0;
+  z-index: 1;
+  color: var(--color-obras);
+}
+
+@media (min-width: 1280px) {
+  .obras-page .archivo-grid .archivo-controles {
+    grid-column: 3 / 11;
+  }
+
+  .obras-page .archivo-grid .archivo-lista-scroll {
+    grid-column: 2 / 11;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .obras-page .archivo-grid .archivo-controles {
+    grid-column: 2 / 12;
+  }
+
+  .obras-page .archivo-grid .archivo-lista-scroll {
+    grid-column: 1 / 12;
+  }
+}
+
+/* Estado vacío alineado con .archivo-buscar (lista empieza 1 col antes que controles) */
+@media (min-width: 1024px) {
+  .obras-page .archivo-lista-scroll > .archivo-vacio {
+    padding: 40px 0 0 calc(var(--archivo-page-col) + var(--grid-gutter));
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 640px) {
+  .obras-page .archivo-lista-scroll {
+    max-height: min(60vh, 360px);
+  }
+}

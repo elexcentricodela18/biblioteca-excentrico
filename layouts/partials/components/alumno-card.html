@@ -1,0 +1,39 @@
+{{/*
+  Card de ex alumno — cita, avatar circular, botón Ver +
+  Parámetros: cita, foto, nombre, periodo, popup { tipo, titulo, src, url, texto }
+*/}}
+<article class="alumno-card alumno-card--compacta">
+  {{ with .cita }}
+  <blockquote class="alumno-card__cita">{{ partial "helpers/versalitas.html" . }}</blockquote>
+  {{ end }}
+  <div class="alumno-card__meta">
+    {{ with .foto }}
+    <img
+      class="alumno-card__avatar"
+      src="{{ .src | relURL }}"
+      alt="{{ .alt | default $.nombre }}"
+      width="48"
+      height="48"
+      loading="lazy"
+      decoding="async">
+    {{ end }}
+    <div class="alumno-card__identidad">
+      {{ with .nombre }}<p class="alumno-card__nombre">{{ . }}</p>{{ end }}
+      {{ with .periodo }}<p class="alumno-card__periodo">{{ . }}</p>{{ end }}
+    </div>
+  </div>
+  {{ with .popup }}
+  <button
+    type="button"
+    class="alumno-card__ver btn-nav btn-nav--dark"
+    data-dialog-open
+    data-dialog-titulo="{{ .titulo | default $.nombre }}"
+    data-dialog-tipo="{{ .tipo | default "texto" }}"
+    {{ with .src }}data-dialog-src="{{ . | relURL }}"{{ end }}
+    {{ with .poster }}data-dialog-poster="{{ . | relURL }}"{{ end }}
+    {{ with .url }}data-dialog-url="{{ . }}"{{ end }}
+    {{ with .texto }}data-dialog-texto="{{ . }}"{{ end }}>
+    Ver +
+  </button>
+  {{ end }}
+</article>

@@ -1,0 +1,27 @@
+{{/*
+  Breadcrumb — miga de pan reutilizable (WCAG / WAI-ARIA)
+  Parámetros:
+    items (slice) — cada ítem: label (string), href (string, opcional = página actual)
+    class (string) — clases extra en <nav> (p. ej. site-col-from-3 site-col-to-end)
+    ariaLabel (string) — default "Miga de pan"
+*/}}
+{{ $items := index . "items" | default (slice) }}
+{{ $class := index . "class" | default "" }}
+{{ $ariaLabel := index . "ariaLabel" | default "Miga de pan" }}
+{{ $navClass := printf "breadcrumb%s" (cond $class (printf " %s" $class) "") }}
+
+<nav class="{{ $navClass }}" aria-label="{{ $ariaLabel }}">
+  <ol class="breadcrumb__list">
+    {{- range $items -}}
+    <li class="breadcrumb__item">
+      {{- if .href -}}
+      <a class="breadcrumb__link" href="{{ .href }}">{{ .label }}</a>
+      {{- else -}}
+      {{- $isTruncated := .truncated | default false -}}
+      {{- $tooltip := .fullTitle | default .label -}}
+      <span class="breadcrumb__current{{ if $isTruncated }} breadcrumb__current--truncate{{ end }}" aria-current="page"{{ if $isTruncated }} title="{{ $tooltip }}"{{ end }}>{{ .label }}</span>
+      {{- end -}}
+    </li>
+    {{- end -}}
+  </ol>
+</nav>

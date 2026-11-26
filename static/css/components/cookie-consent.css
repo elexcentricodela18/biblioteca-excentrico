@@ -1,0 +1,118 @@
+.cookie-consent {
+  position: fixed;
+  left: var(--home-banner-inset-left, 2rem);
+  right: var(--home-banner-inset-right, 2rem);
+  bottom: var(--home-banner-inset-bottom, 20px);
+  z-index: 10001; /* por encima de #centro (10000) en la home */
+  background: var(--fondo);
+  border: 1px solid var(--grey-20);
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.cookie-consent[hidden] {
+  display: none;
+}
+
+.cookie-consent__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1rem 1.5rem 1.25rem;
+}
+
+.cookie-consent__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.cookie-consent__line {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  color: var(--texto);
+}
+
+.cookie-consent__text a {
+  color: var(--grey-50);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.cookie-consent__text a:hover,
+.cookie-consent__text a:focus-visible {
+  color: var(--black);
+}
+
+.cookie-consent__actions {
+  display: flex;
+  flex-shrink: 0;
+  gap: 0.75rem;
+}
+
+.cookie-consent__btn {
+  font-family: var(--sans);
+  font-size: 0.875rem;
+  line-height: 1;
+  padding: 0.65rem 1.1rem;
+  border-radius: 0;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.cookie-consent__btn--decline {
+  border: 1px solid var(--grey-30);
+  background: var(--fondo);
+  color: var(--texto);
+}
+
+.cookie-consent__btn--decline:hover,
+.cookie-consent__btn--decline:focus-visible {
+  border-color: var(--grey-60);
+}
+
+.cookie-consent__btn--accept {
+  border: 1px solid var(--black);
+  background: var(--black);
+  color: var(--white);
+}
+
+.cookie-consent__btn--accept:hover,
+.cookie-consent__btn--accept:focus-visible {
+  background: var(--grey-80);
+  border-color: var(--grey-80);
+}
+
+@media (min-width: 768px) {
+  body.home .cookie-consent {
+    left: 10vw;
+    right: auto;
+    width: max-content;
+    max-width: calc(100vw - 10vw - 2rem);
+  }
+
+  body.home .cookie-consent__inner {
+    justify-content: flex-start;
+    gap: calc(2rem + 40px);
+    padding: 0.875rem 1.25rem 1rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .cookie-consent__inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+    padding: 1rem 1.25rem 1.25rem;
+  }
+
+  .cookie-consent__actions {
+    justify-content: flex-end;
+  }
+}

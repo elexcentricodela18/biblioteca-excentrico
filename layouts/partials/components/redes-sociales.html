@@ -1,0 +1,38 @@
+{{/*
+  Enlaces a redes — texto editorial (sin íconos por ahora)
+  Parámetros:
+    items   (slice) — { plataforma, url, etiqueta? }
+    persona (string) — nombre para aria-label
+  Si no hay URL real, no se renderiza nada.
+*/}}
+{{ $items := partial "helpers/redes-visibles.html" (.items | default slice) }}
+{{ if lt (len $items) 1 }}{{ return }}{{ end }}
+{{ $persona := .persona | default "Esta persona" }}
+
+{{ $labels := dict
+  "instagram" "Instagram"
+  "facebook" "Facebook"
+  "twitter" "Twitter"
+  "x" "X"
+  "web" "Sitio web"
+}}
+
+<nav class="testimonio-redes" aria-label="Redes de {{ $persona }}">
+  <ul class="testimonio-redes__list">
+    {{ range $items }}
+    {{ $plataforma := .plataforma | default "web" }}
+    {{ $etiqueta := .etiqueta | default (index $labels $plataforma) | default (humanize $plataforma) }}
+    <li class="testimonio-redes__item">
+      <a
+        class="testimonio-redes__link"
+        href="{{ .url }}"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="{{ $etiqueta }}, se abre en ventana nueva">
+        <span class="testimonio-redes__plataforma">{{ $etiqueta }}</span>
+        <span class="testimonio-redes__flecha" aria-hidden="true">→</span>
+      </a>
+    </li>
+    {{ end }}
+  </ul>
+</nav>

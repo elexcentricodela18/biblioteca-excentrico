@@ -1,0 +1,55 @@
+{{/*
+  Bloque de texto editorial — tipos configurables desde front matter
+  Parámetros (dict):
+    tipo   — lead-col | dos-columnas | ancho | lead | texto
+    lead   — itálica (lead-col, lead)
+    texto  — cuerpo (lead-col, ancho, texto)
+    col_izq / col_der — dos-columnas
+*/}}
+{{ $tipo := .tipo | default "lead-col" }}
+{{ $clase := .clase }}
+
+{{ if eq $tipo "lead-col" }}
+  {{ with .lead }}
+  <p class="intro-relato-lead">{{ partial "helpers/versalitas.html" . }}</p>
+  {{ end }}
+  {{ with .texto }}
+  <p class="intro-relato-col">{{ partial "helpers/versalitas.html" . }}</p>
+  {{ end }}
+
+{{ else if eq $tipo "dos-columnas" }}
+  {{ with .col_izq }}
+  <p class="intro-relato-col intro-relato-col--izq">{{ partial "helpers/versalitas.html" . }}</p>
+  {{ end }}
+  {{ with .col_der }}
+  <p class="intro-relato-col intro-relato-col--der">{{ partial "helpers/versalitas.html" . }}</p>
+  {{ end }}
+
+{{ else if eq $tipo "ancho" }}
+  {{ with .texto }}
+  <p class="intro-relato-ancho{{ with $clase }} {{ . }}{{ end }}">{{ partial "helpers/versalitas.html" . }}</p>
+  {{ end }}
+
+{{ else if eq $tipo "lead" }}
+  {{ with .texto }}
+  <p class="intro-relato-lead intro-relato-lead--solo{{ with $clase }} {{ . }}{{ end }}">{{ partial "helpers/versalitas.html" . }}</p>
+  {{ else }}
+  {{ with .lead }}
+  <p class="intro-relato-lead intro-relato-lead--solo{{ with $clase }} {{ . }}{{ end }}">{{ partial "helpers/versalitas.html" . }}</p>
+  {{ end }}
+  {{ end }}
+
+{{ else if eq $tipo "texto" }}
+  {{ with .texto }}
+  <p class="intro-relato-col intro-relato-col--solo{{ with $clase }} {{ . }}{{ end }}">{{ partial "helpers/versalitas.html" . }}</p>
+  {{ end }}
+
+{{ else }}
+  {{/* fallback lead-col */}}
+  {{ with .lead }}
+  <p class="intro-relato-lead">{{ partial "helpers/versalitas.html" . }}</p>
+  {{ end }}
+  {{ with .texto }}
+  <p class="intro-relato-col">{{ partial "helpers/versalitas.html" . }}</p>
+  {{ end }}
+{{ end }}

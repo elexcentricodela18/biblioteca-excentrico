@@ -1,0 +1,59 @@
+{{/*
+  Clasificación de tipología para el archivo / línea de tiempo.
+  Parámetros: page — página Hugo
+  Retorna: dict con
+    tipoGrupo    (string) — grupo principal: obras | talleres | ciclos | eventos
+    tipoGrupos   (string) — grupos de filtro, separados por espacio
+    tipoLabel    (string) — etiqueta principal
+    extraGrupo   (string) — segundo grupo de etiqueta, o vacío
+    extraLabel   (string) — segunda etiqueta (p. ej. Obra junto a Charla)
+*/}}
+{{ $page := .page }}
+{{ $tLower := lower ($page.Params.tipo | default "obra") }}
+{{ $tituloLower := lower $page.Title }}
+{{ $tipoGrupo := "obras" }}
+{{ $tipoLabel := "Obra" }}
+{{ $esCharla := or (eq $tLower "charla") (strings.Contains $tLower "charla") }}
+
+{{ if $esCharla }}
+  {{ $tipoGrupo = "eventos" }}
+  {{ $tipoLabel = "Charla" }}
+{{ else if or (eq $tLower "taller") (hasPrefix $tLower "taller") (hasPrefix $tLower "seminario") }}
+  {{ $tipoGrupo = "talleres" }}
+  {{ $tipoLabel = "Taller" }}
+{{ else if or (eq $tLower "ciclo") (hasPrefix $tLower "ciclo") }}
+  {{ $tipoGrupo = "ciclos" }}
+  {{ $tipoLabel = "Ciclo" }}
+{{ else if or (eq $tLower "evento") (hasPrefix $tLower "evento") (eq $tLower "concierto") (hasPrefix $tLower "concierto") }}
+  {{ $tipoGrupo = "eventos" }}
+  {{ $tipoLabel = "Evento" }}
+{{ else if or (eq $tLower "obra") (eq $tLower "obras") (eq $tLower "obra teatral") }}
+  {{ if or (in $tituloLower "seminario") (in $tituloLower "taller") }}
+    {{ $tipoGrupo = "talleres" }}
+    {{ $tipoLabel = "Taller" }}
+  {{ else if and (in $tituloLower "ciclo") (not (in $tituloLower "desconcierto")) }}
+    {{ $tipoGrupo = "ciclos" }}
+    {{ $tipoLabel = "Ciclo" }}
+  {{ else if or (and (in $tituloLower "concierto") (not (in $tituloLower "desconcierto"))) (in $tituloLower "festival") (in $tituloLower "evento") }}
+    {{ $tipoGrupo = "eventos" }}
+    {{ $tipoLabel = "Evento" }}
+  {{ end }}
+{{ end }}
+
+{{ $tipoGrupos := $tipoGrupo }}
+{{ $extraGrupo := "" }}
+{{ $extraLabel := "" }}
+
+{{/* Ciclo, evento y charla: una sola categoría de filtro (menú Ciclos y eventos). */}}
+{{ if or (eq $tipoGrupo "ciclos") (eq $tipoGrupo "eventos") }}
+  {{ $tipoGrupos = "ciclos-eventos" }}
+{{ end }}
+{{ if $esCharla }}
+  {{ if or (hasPrefix $tLower "taller") (strings.Contains $tLower "obra") }}
+    {{ $tipoGrupos = "ciclos-eventos obras" }}
+    {{ $extraGrupo = "obras" }}
+    {{ $extraLabel = "Obra" }}
+  {{ end }}
+{{ end }}
+
+{{ return (dict "tipoGrupo" $tipoGrupo "tipoGrupos" $tipoGrupos "tipoLabel" $tipoLabel "extraGrupo" $extraGrupo "extraLabel" $extraLabel) }}

@@ -1,0 +1,31 @@
+{{ define "main" }}
+{{ $page := . }}
+{{ $hero := .Params.hero }}
+{{ $secciones := .Params.secciones }}
+
+<div class="valentina-page alberto-ure-page">
+  <div class="grid-container">
+    <div class="grid historia-layout-grid">
+      <h1 class="historia-titulo-pagina valentina-titulo-pagina alberto-ure-titulo-pagina site-col-from-2 site-col-to-end">{{ partial "helpers/titulo-seccion.html" .Title }}</h1>
+    </div>
+  </div>
+
+  {{ partial "section/valentina-hero.html" (dict "hero" $hero) }}
+
+  {{ with .Params.intro }}
+  <section class="intro-relato valentina-intro">
+    <div class="grid-container">
+      <div class="grid intro-relato-grid">
+        {{ partial "section/valentina-intro.html" (dict "page" $page) }}
+      </div>
+    </div>
+  </section>
+  {{ end }}
+
+  {{ range $secciones }}
+  {{ partial "section/valentina-seccion.html" (dict "seccion" .) }}
+  {{ end }}
+
+  {{ partial "components/btn-up-to-top.html" dict }}
+</div>
+{{ end }}

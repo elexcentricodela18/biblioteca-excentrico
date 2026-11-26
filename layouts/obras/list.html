@@ -1,0 +1,70 @@
+{{ define "main" }}
+{{ $scratch := newScratch }}
+{{ range sort .RegularPages "Params.anio" "desc" }}
+  {{ $tipo := partial "components/archivo-tipo-grupo.html" (dict "page" .) }}
+  {{ if eq $tipo.tipoGrupo "obras" }}
+    {{ $scratch.Add "pages" (slice .) }}
+  {{ end }}
+{{ end }}
+{{ $pages := $scratch.Get "pages" }}
+{{ $periodTabs := slice
+    (dict "label" "2020-2029" "value" "2020" "active" true)
+    (dict "label" "2010-2019" "value" "2010" "active" false)
+    (dict "label" "2000-2009" "value" "2000" "active" false)
+    (dict "label" "1980-1999" "value" "1980" "active" false)
+    (dict "label" "Todos" "value" "todos" "active" false "class" "tabs__tab--case-as-is")
+}}
+
+<div class="obras-page" data-pagefind-body>
+  <div class="grid-container">
+    <div class="grid section-header-grid">
+      <h1 class="section-titulo-pagina section-titulo-pagina--obras">{{ partial "helpers/titulo-seccion.html" .Title }}</h1>
+      {{ partial "section/equipo-intro.html" (dict "page" .) }}
+    </div>
+  </div>
+
+  <section class="archivo-section obras-archivo" aria-label="Listado de obras">
+    <div class="grid-container">
+      <div class="grid archivo-grid">
+        <div class="archivo-controles" id="obras-controles">
+          <div class="lista-controles">
+            <div class="archivo-buscar">
+              <form class="buscador-form" role="search" id="obras-buscar-form">
+                <label class="visually-hidden" for="obras-busqueda-input">Buscar obras</label>
+                <input type="search" id="obras-busqueda-input" class="buscar-input" placeholder="Buscar obras . . ." autocomplete="off">
+                {{ partial "components/buscador-actions.html" (dict "tooltips" true) }}
+              </form>
+              <div class="archivo-busqueda-info-slot" aria-live="polite">
+                <p class="archivo-busqueda-info" id="obras-busqueda-info" aria-hidden="true"></p>
+              </div>
+            </div>
+
+            {{ partial "components/tabs.html" (dict
+                "id" "obras-tabs-periodo"
+                "ariaLabel" "Filtrar por período"
+                "class" "archivo-tabs-periodo"
+                "items" $periodTabs
+            ) }}
+          </div>
+        </div>
+
+        <div class="archivo-lista-scroll" id="obras-scroll">
+          <div class="lista-cronologica" id="obras-lista">
+            {{ partial "components/archivo-paginas.html" (dict "pages" $pages "soloObras" true) }}
+          </div>
+
+          <div class="archivo-vacio" id="obras-vacio" hidden aria-live="polite">
+            <p id="obras-vacio-msg">No hay obras que coincidan.</p>
+            <div class="archivo-vacio-acciones">
+              <button type="button" class="btn-nav btn-nav--light" id="obras-vacio-sec" hidden>Limpiar búsqueda</button>
+              <button type="button" class="btn-nav btn-nav--dark" id="obras-vacio-pri" hidden>Ver todas las obras</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {{ partial "components/btn-up-to-top.html" dict }}
+</div>
+{{ end }}

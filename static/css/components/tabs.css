@@ -1,0 +1,103 @@
+/* ═══════════════════════════════════════════════
+   Tabs — componente reutilizable (Figma)
+   Default · Hover · Pressed · Active
+   ═══════════════════════════════════════════════ */
+
+/* Baseline grey-40 continua bajo toda la fila (y hacia la derecha) */
+.tabs-bar {
+    box-sizing: border-box;
+    display: flex;
+    width: 100%;
+    align-items: flex-end;
+    border-bottom: 1px solid var(--grey-40);
+}
+
+.tabs {
+    box-sizing: border-box;
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: flex-end;
+    gap: 0;
+    --tabs-top-radius: 6px;
+}
+
+.tabs__tab {
+    box-sizing: border-box;
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 16px;
+    gap: 10px;
+    margin: 0;
+    border: 1px solid var(--grey-40);
+    border-bottom: none;
+    border-top-left-radius: var(--tabs-top-radius);
+    border-top-right-radius: var(--tabs-top-radius);
+    background: var(--white);
+    font-family: var(--serif);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 21px;
+    text-transform: lowercase;
+    font-feature-settings: 'pnum' on, 'onum' on;
+    color: var(--grey-60);
+    cursor: pointer;
+    flex: none;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.tabs__tab + .tabs__tab {
+    margin-left: -1px;
+}
+
+.tabs__tab:hover:not(.is-active) {
+    background: #ededed;
+    color: var(--grey-100);
+    border-color: var(--grey-40);
+    z-index: 2;
+}
+
+.tabs__tab:active:not(.is-active) {
+    background: #ededed;
+    border-color: var(--grey-100);
+    color: var(--grey-100);
+    z-index: 2;
+}
+
+.tabs__tab.is-active {
+    margin-bottom: -1px;
+    background: var(--grey-100);
+    border-color: var(--grey-100);
+    border-bottom: 1px solid var(--grey-100);
+    color: var(--grey-0);
+    z-index: 3;
+}
+
+.tabs__tab.is-active:hover {
+    background: var(--grey-100);
+    border-color: var(--grey-100);
+    border-bottom-color: var(--grey-100);
+    color: var(--grey-0);
+}
+
+.tabs__tab:focus {
+    outline: none;
+}
+
+.tabs__tab:focus-visible {
+    outline: 2px solid var(--grey-70);
+    outline-offset: -2px;
+    z-index: 4;
+}
+
+.tabs__tab--case-as-is {
+    text-transform: none;
+}

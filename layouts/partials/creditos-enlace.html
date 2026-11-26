@@ -1,0 +1,9 @@
+{{ $home := .IsHome }}
+<button
+  type="button"
+  class="creditos-enlace{{ if $home }} creditos-enlace--home{{ end }}"
+  data-dialog-open
+  data-dialog-tipo="html"
+  data-dialog-source="colofon-creditos">
+  Créditos
+</button>

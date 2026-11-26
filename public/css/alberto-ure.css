@@ -1,0 +1,186 @@
+/* ═══════════════════════════════════════════════
+   Alberto Ure
+   ═══════════════════════════════════════════════ */
+
+@import url('valentina.css');
+
+.alberto-ure-titulo-pagina {
+  color: var(--color-alberto-ure);
+}
+
+.alberto-ure-page .historia-hero-media {
+  aspect-ratio: 2000 / 855;
+  background-color: var(--color-alberto-ure);
+  --hero-luz-rgb: var(--color-alberto-ure-rgb);
+}
+
+.alberto-ure-page .historia-hero-img {
+  object-fit: contain;
+  object-position: center;
+}
+
+.alberto-ure-page .valentina-intro .intro-relato-ancho--firma {
+  margin-top: calc(var(--paragraph-gap) - var(--block-gap) + 1.5em);
+}
+
+.video-entry-list {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--block-gap) * 2);
+}
+
+.video-entry {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.video-entry__texto {
+  margin: 0;
+}
+
+.video-entry .intro-relato-epigrafe {
+  margin: 0;
+}
+
+.libro-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--block-gap) var(--grid-gutter);
+  width: 100%;
+}
+
+.libro-card {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.libro-card--apaisada,
+.libro-card--ediciones {
+  grid-column: 1 / -1;
+}
+
+.libro-card__ediciones {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--grid-gutter);
+  align-items: start;
+}
+
+.libro-card__edicion {
+  min-width: 0;
+}
+
+.libro-card__edicion-dato {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.libro-card__media {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: var(--grey-20);
+  cursor: zoom-in;
+  text-align: left;
+  overflow: hidden;
+}
+
+.libro-card__media img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.libro-card:not(.libro-card--apaisada) .libro-card__media,
+.libro-card--ediciones .libro-card__media {
+  aspect-ratio: 2 / 3;
+}
+
+.libro-card:not(.libro-card--apaisada) .libro-card__media img,
+.libro-card--ediciones .libro-card__media img {
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.libro-card--apaisada .libro-card__media {
+  aspect-ratio: 3 / 2;
+}
+
+.libro-card--apaisada .libro-card__media img {
+  height: 100%;
+  object-fit: contain;
+}
+
+.libro-card__caption {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.libro-card__caption.libro-card__caption--ediciones {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--grid-gutter);
+  align-items: start;
+}
+
+.libro-card__titulo {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--texto);
+}
+
+.libro-card__sub,
+.libro-card__dato {
+  font-family: var(--serif-it);
+  font-size: 16px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--grey-60);
+}
+
+.libro-card__autores {
+  font-family: var(--serif);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--grey-60);
+  overflow-wrap: normal;
+  word-break: normal;
+  text-wrap: pretty;
+}
+
+.libro-card__formato {
+  margin-top: 0.2rem;
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--grey-60);
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+  width: fit-content;
+}
+
+.libro-card__formato:hover {
+  color: var(--color-alberto-ure);
+}
+
+@media (min-width: 768px) {
+  .libro-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

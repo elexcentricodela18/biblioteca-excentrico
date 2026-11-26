@@ -1,0 +1,55 @@
+{{- /*
+  Texto extra para data-extra del archivo: créditos, taxonomías y sinopsis.
+  Recibe: página Hugo.
+*/ -}}
+{{- $page := . -}}
+{{- $parts := slice -}}
+
+{{- $keys := slice
+  "genero" "autor" "elenco" "vestuario" "iluminacion" "musica" "sonido"
+  "direccion_de_arte" "escenografia" "fotografia" "asistencia_de_direccion"
+  "docente" "docentes" "direccion" "director"
+-}}
+{{- range $keys -}}
+  {{- with index $page.Params . -}}
+    {{- $flat := strings.TrimSpace (partial "helpers/archivo-busqueda-flatten.html" .) -}}
+    {{- if $flat -}}
+      {{- $parts = $parts | append $flat -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- range $page.Params.temporadas -}}
+  {{- $parts = $parts | append (string .) -}}
+{{- end -}}
+
+{{- with $page.Params.video -}}
+  {{- if reflect.IsMap . -}}
+    {{- with .titulo -}}
+      {{- $parts = $parts | append (lower .) -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- range $tax := slice "docentes" "generos" -}}
+  {{- range $page.GetTerms $tax -}}
+    {{- $parts = $parts | append (lower .Title) -}}
+  {{- end -}}
+{{- end -}}
+
+{{- with $page.Params.tipo -}}
+  {{- $t := lower . -}}
+  {{- if and $t (ne $t "obra") (ne $t "obras") -}}
+    {{- $parts = $parts | append $t -}}
+  {{- end -}}
+{{- end -}}
+
+{{- with $page.Plain -}}
+  {{- $plain := replaceRE `\s+` " " (strings.TrimSpace .) -}}
+  {{- $low := lower $plain -}}
+  {{- if and $low (not (in $low "aquí se puede escribir")) -}}
+    {{- $parts = $parts | append $low -}}
+  {{- end -}}
+{{- end -}}
+
+{{- delimit $parts " " -}}

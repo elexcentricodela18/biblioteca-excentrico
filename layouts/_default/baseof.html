@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es"{{ if and .IsHome (not .Site.Params.home_gate) }} class="home-unlocked"{{ end }}>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -104,7 +104,7 @@
     {{ if .Site.Params.home_gate }}
     <script src="/js/home-gate.js" defer></script>
     {{ end }}
-    <script src="/js/escenario.js?v=6" defer></script>
+    <script src="/js/escenario.js?v=7" defer></script>
     <script src="/js/cookie-consent.js" defer></script>
   {{ end }}
 

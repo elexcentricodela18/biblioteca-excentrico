@@ -162,9 +162,12 @@ function iniciarEscenario() {
   }, 800);
 }
 
-/* El mazo no corre detrás del candado. */
+/* El mazo no corre detrás del candado (si no hay gate, arranca al tiro). */
 function esperarDesbloqueo() {
-  if (document.documentElement.classList.contains('home-unlocked')) {
+  if (
+    document.documentElement.classList.contains('home-unlocked') ||
+    !document.getElementById('home-gate')
+  ) {
     iniciarEscenario();
     return;
   }

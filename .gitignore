@@ -1,0 +1,20 @@
+# OS
+.DS_Store
+**/.DS_Store
+
+# Contexto / Cursor (fuera del sitio público)
+memory.md
+VECTOR.md
+
+# Hugo
+/public/
+.hugo_build.lock
+resources/_gen/
+
+# Node
+node_modules/
+.env
+.env.*
+
+.cursor/
+.cursor

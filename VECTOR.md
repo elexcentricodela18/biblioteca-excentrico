@@ -1,1 +1,0 @@
-../biblioteca-excentrico-contexto/VECTOR.md

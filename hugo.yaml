@@ -10,6 +10,8 @@ params:
   color_texto: "#111111"
   tipografia_titulo: "DM Serif Display"
   tipografia_cuerpo: "DM Sans"
+  # Gate de clave en la home. true = pedir clave; false = sitio público.
+  home_gate: false
 
 taxonomies:
   tipo: tipos
